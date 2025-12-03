@@ -1,0 +1,368 @@
+/* No comment provided by engineer. */
+"Active Connections" = "活动连接";
+
+/* Provider update time title */
+" ago" = "前";
+
+/* No comment provided by engineer. */
+"Add a remote config" = "添加托管配置文件";
+
+/* No comment provided by engineer. */
+"Add a remote control config" = "添加远程控制器配置";
+
+/* No comment provided by engineer. */
+"Alpha Meta core Warning" = "如果你不知道你在做什么, 请绝对不要打开这个开关.\n在 'su' 权限下运行未经验证的 Meta 核心, 可能损坏你的 mac.";
+
+/* No comment provided by engineer. */
+"All Clients" = "所有客户端";
+
+/* No comment provided by engineer. */
+"All Hosts" = "所有主机名";
+
+/* No comment provided by engineer. */
+"Apply and Quit" = "应用并退出";
+
+/* No comment provided by engineer. */
+"Benchmark" = "延迟测速";
+
+/* No comment provided by engineer. */
+"Benchmark Finished!" = "延迟测速完成";
+
+/* No comment provided by engineer. */
+"Benchmark has begun, please wait." = "延迟测速开始，请稍候";
+
+/* No comment provided by engineer. */
+"Benchmark is processing, please wait." = "延迟测速正在进行中，请稍候。";
+
+/* No comment provided by engineer. */
+"Cancel" = "取消";
+
+/* No comment provided by engineer. */
+"ClashX fail to create ~/.config/clash.meta folder. Please check privileges or manually create folder and restart ClashX." = "ClashX 创建 ~/.config/clash.meta 文件夹失败，请检查权限设置或者手动创建文件夹后重启 ClashX";
+
+/* No comment provided by engineer. */
+"ClashX needs to install/update a helper tool with administrator privileges, otherwise ClashX won't be able to configure system proxy." = "ClashX 需要使用管理员权限安装/更新一个帮助程序，否则 ClashX 将无法设置系统代理。";
+
+/* No comment provided by engineer. */
+"ClashX Start Error!" = "ClashX 启动出错";
+
+/* No comment provided by engineer. */
+"ClashX use a daemon helper to setup your system proxy. Please enable ClashX in the Login Items under the Allow in the Background section and relaunch the app" = "ClashX需要通过后台Daemon进程来设置系统代理，请在\"系统偏好设置->登录项->允许在后台 中\"允许ClashX";
+
+/* No comment provided by engineer. */
+"Click OK to quit the app and apply change." = "确认清理并退出软件";
+
+/* No comment provided by engineer. */
+"Client" = "客户端";
+
+/* No comment provided by engineer. */
+"Close Connection" = "关闭连接";
+
+/* No comment provided by engineer. */
+"Config file have been changed" = "配置文件已被修改";
+
+/* No comment provided by engineer. */
+"Config loading Fail!" = "配置文件加载失败";
+
+/* No comment provided by engineer. */
+"Connecting" = "连接中";
+
+/* No comment provided by engineer. */
+"Copy Shell Command" = "复制终端代理命令";
+
+/* No comment provided by engineer. */
+"Copy Shell Command (External)" = "复制终端代理命令(外部IP)";
+
+/* No comment provided by engineer. */
+"Continue" = "继续";
+
+/* No comment provided by engineer. */
+"Custom your GEOIP MMDB download address." = "自定义下载地址";
+
+/* No comment provided by engineer. */
+"Decode current config failed." = "无法解析当前的配置文件.";
+
+/* No comment provided by engineer. */
+"Date" = "时间";
+
+/* No comment provided by engineer. */
+"Details" = "查看详情";
+
+/* No comment provided by engineer. */
+"Direct" = "直连";
+
+/* No comment provided by engineer. */
+"Direct Mode" = "直接连接";
+
+/* No comment provided by engineer. */
+"Done" = "完成";
+
+/* No comment provided by engineer. */
+"Download" = "下载";
+
+/* No comment provided by engineer. */
+"Download fail" = "下载失败";
+
+/* No comment provided by engineer. */
+"Download Meta core" = "下载 Meta 内核";
+
+/* No comment provided by engineer. */
+"Enhance proxy list render" = "增强渲染代理列表";
+
+/* No comment provided by engineer. */
+"Download speed" = "下载速率";
+
+/* No comment provided by engineer. */
+"Edit in Text Mode" = "编辑配置";
+
+/* No comment provided by engineer. */
+"fail" = "失败";
+
+/* No comment provided by engineer. */
+"Fail" = "失败";
+
+/* No comment provided by engineer. */
+"Fail:" = "失败：";
+
+/* No comment provided by engineer. */
+"Flush fake-ip cache" = "清空 fake-ip 缓存";
+
+/* No comment provided by engineer. */
+"Flush dns cache" = "清空 dns 缓存";
+
+/* No comment provided by engineer. */
+"fails: %@" = "失败: %@";
+
+/* No comment provided by engineer. */
+"Global" = "全局";
+
+/* No comment provided by engineer. */
+"Global Mode" = "全局连接";
+
+/* No comment provided by engineer. */
+"Good luck to you  🙃" = "祝你好运  🙃";
+
+/* No comment provided by engineer. */
+"Host" = "主机名";
+
+/* No comment provided by engineer. */
+"Hosts" = "主机名";
+
+/* No comment provided by engineer. */
+"hours" = "小时";
+
+/* No comment provided by engineer. */
+"iCloud not available" = "iCloud 不可用";
+
+/* No comment provided by engineer. */
+"If you can not find ClashX in the settings, you can try reset daemon" = "如果在设置里没找到ClashX,可以尝试重置守护程序";
+
+/* No comment provided by engineer. */
+"Install" = "安装";
+
+/* No comment provided by engineer. */
+"Invalid input" = "输入不合法";
+
+/* No comment provided by engineer. */
+"Legacy Install" = "传统安装";
+
+/* No comment provided by engineer. */
+"Load Balance" = "负载均衡";
+
+/* No comment provided by engineer. */
+"Local Clients" = "本地程序";
+
+/* No comment provided by engineer. */
+"Need to Restart the ClashX to Take effect, Please start clashX manually" = "需要重启ClashX生效，请手动启动ClashX";
+
+/* No comment provided by engineer. */
+"Never" = "从未";
+
+/* No comment provided by engineer. */
+"Never show again" = "不再提示";
+
+/* No comment provided by engineer. */
+"No new release found." = "未找到更新.";
+
+/* No comment provided by engineer. */
+"Not found current config." = "未找到当前的配置文件.";
+
+/* No comment provided by engineer. */
+"OK" = "确定";
+
+/* No comment provided by engineer. */
+"Open Connection Details" = "打开连接查看器";
+
+/* No comment provided by engineer. */
+"Open Dashboard" = "打开控制台";
+
+/* No comment provided by engineer. */
+"Open Log" = "打开日志";
+
+/* No comment provided by engineer. */
+"Open Menu" = "打开菜单";
+
+/* No comment provided by engineer. */
+"Open System Login Item Setting" = "打开系统登录项设置";
+
+/* No comment provided by engineer. */
+"Open github release page to download " = "打开 GitHub Release 下载 ";
+
+/* No comment provided by engineer. */
+"Please enable the location service for ClashX to detect your current WiFi network's SSID name and provide the auto-suspend services." = "请允许ClashX使用定位服务来获取当前所连接的WiFi名称从而提供按需暂停服务。";
+
+/* No comment provided by engineer. */
+"Ports Open Fail, Please try to restart ClashX" = "端口打开失败，请尝试重启ClashX";
+
+/* No comment provided by engineer. */
+"Prelease" = "Prelease";
+
+/* No comment provided by engineer. */
+"Proxy Mode" = "出站模式";
+
+/* No comment provided by engineer. */
+"Proxy settings are changed by another process. ClashX is no longer the default system proxy." = "系统代理设置已被另一个进程修改，ClashX不再是系统默认代理";
+
+/* No comment provided by engineer. */
+"Quit" = "退出";
+
+/* No comment provided by engineer. */
+"Quit ClashX?" = "退出ClashX?";
+
+/* No comment provided by engineer. */
+"Recent Connections" = "最近连接";
+
+/* No comment provided by engineer. */
+"Reduce alerts if notification permission is disabled" = "在通知权限关闭时减少提示弹窗";
+
+/* No comment provided by engineer. */
+"Reload Config Fail" = "重载配置文件失败";
+
+/* No comment provided by engineer. */
+"Reload Config Succeed" = "重载配置文件成功";
+
+/* No comment provided by engineer. */
+"Remote Config Format Error" = "托管配置文件格式不正确";
+
+/* No comment provided by engineer. */
+"Remote Config Update" = "更新托管配置文件";
+
+/* No comment provided by engineer. */
+"Remote Config Update Fail" = "托管配置文件更新失败";
+
+/* No comment provided by engineer. */
+"Requests" = "请求";
+
+/* No comment provided by engineer. */
+"Reset Daemon" = "重置守护程序";
+
+/* No comment provided by engineer. */
+"ReTest" = "重新测速";
+
+/* No comment provided by engineer. */
+"Rule" = "规则";
+
+/* No comment provided by engineer. */
+"Rule Mode" = "规则判断";
+
+/* No comment provided by engineer. */
+"Script" = "脚本";
+
+/* No comment provided by engineer. */
+"Should be a least 1 hour" = "至少需要1小时间隔";
+
+/* No comment provided by engineer. */
+"Some thing failed." = "发生了一些错误.";
+
+/* No comment provided by engineer. */
+"Sources" = "来源";
+
+/* No comment provided by engineer. */
+"Stable" = "Stable";
+
+/* No comment provided by engineer. */
+"Start Meta Fail!" = "打开Meta 失败!";
+
+/* No comment provided by engineer. */
+"Status" = "状态";
+
+/* No comment provided by engineer. */
+"Succeed!" = "成功！";
+
+/* No comment provided by engineer. */
+"Success" = "成功";
+
+/* No comment provided by engineer. */
+"Success!" = "成功！";
+
+/* No comment provided by engineer. */
+"System Proxy" = "设置系统代理";
+
+/* No comment provided by engineer. */
+"System Proxy Changed" = "系统代理设置已修改";
+
+/* No comment provided by engineer. */
+"Tap to reload config" = "点击重载配置文件";
+
+/* No comment provided by engineer. */
+"Testing" = "测速中";
+
+/* No comment provided by engineer. */
+"The active connections will be interrupted." = "活动的连接将被强制打断。";
+
+/* No comment provided by engineer. */
+"The remote config name is duplicated" = "托管配置文件名称重复";
+
+/* No comment provided by engineer. */
+"The status icon is coverd or hide by other app." = "菜单栏图标被刘海屏遮挡或者被其他app隐藏，请检查菜单栏状态。";
+
+/* No comment provided by engineer. */
+"This version of ClashX contains a break change due to clash core 1.0 released. Check if your config is not working properly." = "由于Clash Core发布1.0版本，使用此版本的 ClashX 可能需要更新配置内容\n前往 https://github.com/Dreamacro/clash/wiki/breaking-changes-in-1.0.0 查看详情";
+
+/* No comment provided by engineer. */
+"Update All Providers" = "更新所有 Providers";
+
+/* No comment provided by engineer. */
+"Update Alpha Meta core" = "更新 Alpha Meta 内核";
+
+/* No comment provided by engineer. */
+"Update GEOIP Database" = "更新 GEOIP 数据库";
+
+/* No comment provided by engineer. */
+"total: %d, success: %d" = "共计: %d, 成功: %d";
+
+/* No comment provided by engineer. */
+"Type" = "类型";
+
+/* No comment provided by engineer. */
+"Unknown" = "未知";
+
+/* No comment provided by engineer. */
+"Update external resource complete" = "更新外部资源完成";
+
+/* No comment provided by engineer. */
+"Update GEOIP Database" = "更新IP数据库";
+
+/* No comment provided by engineer. */
+"Update remote config update interval" = "远程配置自动更新间隔";
+
+/* No comment provided by engineer. */
+"Updating" = "更新中";
+
+/* No comment provided by engineer. */
+"Updating GEO Databases..." = "更新 GEO 数据库...";
+
+/* No comment provided by engineer. */
+"Upgrade Channel" = "更新通道";
+
+/* No comment provided by engineer. */
+"Upload" = "上传";
+
+/* No comment provided by engineer. */
+"Upload speed" = "上传速率";
+
+/* No comment provided by engineer. */
+"Use reload config to try reconnect." = "使用重载配置文件按钮尝试重新连接";
+
+/* No comment provided by engineer. */
+"Version: " = "版本: ";
