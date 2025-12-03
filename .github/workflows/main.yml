@@ -34,8 +34,8 @@ jobs:
 
     - name: build infos
       run: |
-        /usr/libexec/PlistBuddy -c "Set CFBundleVersion $(git rev-list --count origin/master..origin/meta)" ClashX/Info.plist
-        /usr/libexec/PlistBuddy -c "Set CFBundleShortVersionString $(git describe --tags --abbrev=0)" ClashX/Info.plist
+        /usr/libexec/PlistBuddy -c "Set CFBundleVersion $(git rev-list --count HEAD)" ClashX/Info.plist
+        /usr/libexec/PlistBuddy -c "Set CFBundleShortVersionString $(git describe --tags --abbrev=0 2>/dev/null || echo '1.0.0')" ClashX/Info.plist
         /usr/libexec/PlistBuddy -c "Add coreVersion string $(ls clash.meta | grep -m1 "" | sed -ne 's/.*64-\(.*\).gz/\1/p')" ClashX/Info.plist
         /usr/libexec/PlistBuddy -c "Add gitBranch string $GITHUB_REF_NAME" ClashX/Info.plist
         /usr/libexec/PlistBuddy -c "Add gitCommit string ${GITHUB_SHA::7}" ClashX/Info.plist
@@ -69,40 +69,42 @@ jobs:
         name: "ClashX Meta.zip"
         path: "*.zip"
 
-    - name: load sparkle-repo
-      uses: actions/checkout@v4
-      if: startsWith(github.ref, 'refs/tags/')
-      with:
-        ref: sparkle
-        path: 'sparkle-repo'
+    # Sparkle 自动更新功能暂时禁用
+    # 如需启用，请先创建 sparkle 分支并配置 ED_KEY secret
+    # - name: load sparkle-repo
+    #   uses: actions/checkout@v4
+    #   if: startsWith(github.ref, 'refs/tags/')
+    #   with:
+    #     ref: sparkle
+    #     path: 'sparkle-repo'
 
-    - name: update sparkle-repo
-      if: startsWith(github.ref, 'refs/tags/')
-      run: |
-        git config --global user.name "github-actions[bot]"
-        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+    # - name: update sparkle-repo
+    #   if: startsWith(github.ref, 'refs/tags/')
+    #   run: |
+    #     git config --global user.name "github-actions[bot]"
+    #     git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
-        rm -f sparkle-repo/*.delta
+    #     rm -f sparkle-repo/*.delta
 
-        cp "ClashX Meta.zip" "sparkle-repo/ClashX Meta $GITHUB_REF_NAME.zip"
-        
-        brew install sparkle
-        echo '${{ secrets.ED_KEY }}' | $(brew --prefix)/Caskroom/sparkle/2.*/bin/generate_appcast sparkle-repo --maximum-deltas 2 --auto-prune-update-files --ed-key-file -
-        
-        cd sparkle-repo
-        rm -rf old_updates
-        
-        git checkout --orphan temp-sparkle
+    #     cp "ClashX Meta.zip" "sparkle-repo/ClashX Meta $GITHUB_REF_NAME.zip"
+    #
+    #     brew install sparkle
+    #     echo '${{ secrets.ED_KEY }}' | $(brew --prefix)/Caskroom/sparkle/2.*/bin/generate_appcast sparkle-repo --maximum-deltas 2 --auto-prune-update-files --ed-key-file -
+    #
+    #     cd sparkle-repo
+    #     rm -rf old_updates
+    #
+    #     git checkout --orphan temp-sparkle
 
-        git add -A
-        git commit -m "Sparkle updates - $GITHUB_REF_NAME"
-      
+    #     git add -A
+    #     git commit -m "Sparkle updates - $GITHUB_REF_NAME"
+    #
 
-        git branch -D sparkle
-        git checkout -b sparkle
-        git branch -D temp-sparkle
+    #     git branch -D sparkle
+    #     git checkout -b sparkle
+    #     git branch -D temp-sparkle
 
-        git push --force-with-lease origin sparkle
+    #     git push --force-with-lease origin sparkle
 
     - name: upload build to github
       uses: softprops/action-gh-release@v2
