@@ -55,6 +55,8 @@ jobs:
         bash install_dependency.sh
         xcodebuild -resolvePackageDependencies -project ClashX.xcodeproj
 
+    - name: install create-dmg
+      run: brew install create-dmg
 
     - name: build
       run: |

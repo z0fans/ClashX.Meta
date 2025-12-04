@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # ClashX Meta DMG 打包脚本
+# 使用 create-dmg 工具 (https://github.com/create-dmg/create-dmg)
 # 用法: ./create_dmg.sh
 
 set -e
@@ -9,177 +10,101 @@ set -e
 APP_NAME="ClashX Meta"
 APP_PATH="archive/ClashX.xcarchive/Products/Applications/${APP_NAME}.app"
 DMG_NAME="${APP_NAME}.dmg"
-TEMP_DMG_NAME="temp.dmg"
 VOLUME_NAME="${APP_NAME}"
 DMG_BACKGROUND="dmg_background.png"
 
-# 创建临时目录
-TEMP_DIR=$(mktemp -d)
-echo "创建临时目录: ${TEMP_DIR}"
-
-# 清理函数
-cleanup() {
-    echo "清理临时文件..."
-    rm -rf "${TEMP_DIR}"
-    rm -f "${TEMP_DMG_NAME}"
-}
-trap cleanup EXIT
+echo "========================================"
+echo "ClashX Meta DMG 打包工具"
+echo "========================================"
 
 # 检查应用是否存在
 if [ ! -d "${APP_PATH}" ]; then
-    echo "错误: 找不到应用程序 ${APP_PATH}"
+    echo "❌ 错误: 找不到应用程序 ${APP_PATH}"
     exit 1
 fi
+
+echo "✓ 找到应用程序: ${APP_PATH}"
+
+# 检查并安装 create-dmg
+if ! command -v create-dmg &> /dev/null; then
+    echo "📦 create-dmg 未安装,正在通过 Homebrew 安装..."
+    if command -v brew &> /dev/null; then
+        brew install create-dmg
+    else
+        echo "❌ 错误: 未找到 Homebrew,请先安装 create-dmg"
+        echo "安装方法: brew install create-dmg"
+        echo "或访问: https://github.com/create-dmg/create-dmg"
+        exit 1
+    fi
+fi
+
+echo "✓ create-dmg 工具已就绪"
+
+# 删除旧的 DMG(如果存在)
+if [ -f "${DMG_NAME}" ]; then
+    echo "🗑️  删除旧的 DMG 文件..."
+    rm -f "${DMG_NAME}"
+fi
+
+# 构建 create-dmg 参数
+echo "🔨 开始创建 DMG..."
+
+CREATE_DMG_OPTIONS=(
+    --volname "${VOLUME_NAME}"
+    --window-pos 200 120
+    --window-size 500 350
+    --icon-size 100
+    --icon "${APP_NAME}.app" 125 180
+    --app-drop-link 375 180
+)
+
+# 如果背景图存在,添加背景图参数
+if [ -f "${DMG_BACKGROUND}" ]; then
+    echo "✓ 找到背景图: ${DMG_BACKGROUND}"
+    CREATE_DMG_OPTIONS+=(--background "${DMG_BACKGROUND}")
+else
+    echo "⚠️  未找到背景图,将使用默认样式"
+fi
+
+# 在 CI 环境中跳过 AppleScript 美化
+if [ -n "$CI" ] || [ -n "$GITHUB_ACTIONS" ]; then
+    echo "🤖 检测到 CI 环境,跳过 AppleScript 窗口美化"
+    CREATE_DMG_OPTIONS+=(--skip-jenkins)
+fi
+
+# 创建临时目录用于打包
+TEMP_DIR=$(mktemp -d)
+echo "📁 创建临时目录: ${TEMP_DIR}"
+
+# 清理函数
+cleanup() {
+    echo "🧹 清理临时文件..."
+    rm -rf "${TEMP_DIR}"
+}
+trap cleanup EXIT
 
 # 复制应用到临时目录
-echo "复制应用到临时目录..."
+echo "📋 复制应用到临时目录..."
 cp -R "${APP_PATH}" "${TEMP_DIR}/"
 
-# 创建 Applications 文件夹的软链接
-echo "创建 Applications 链接..."
-ln -s /Applications "${TEMP_DIR}/Applications"
+# 执行 create-dmg
+echo "🚀 执行 create-dmg..."
+create-dmg \
+    "${CREATE_DMG_OPTIONS[@]}" \
+    "${DMG_NAME}" \
+    "${TEMP_DIR}" || {
+    echo "❌ create-dmg 执行失败"
+    exit 1
+}
 
-# 如果存在背景图,复制到临时目录
-if [ -f "${DMG_BACKGROUND}" ]; then
-    mkdir -p "${TEMP_DIR}/.background"
-    cp "${DMG_BACKGROUND}" "${TEMP_DIR}/.background/"
-fi
-
-# 计算需要的磁盘空间(应用大小 + 50MB 缓冲)
-APP_SIZE=$(du -sm "${APP_PATH}" | awk '{print $1}')
-DMG_SIZE=$((APP_SIZE + 50))
-echo "DMG 大小: ${DMG_SIZE}MB"
-
-# 创建临时 DMG
-echo "创建临时 DMG..."
-hdiutil create -srcfolder "${TEMP_DIR}" \
-    -volname "${VOLUME_NAME}" \
-    -fs HFS+ \
-    -fsargs "-c c=64,a=16,e=16" \
-    -format UDRW \
-    -size ${DMG_SIZE}m \
-    "${TEMP_DMG_NAME}"
-
-# 挂载临时 DMG
-echo "挂载 DMG..."
-MOUNT_OUTPUT=$(hdiutil attach -readwrite -noverify -noautoopen "${TEMP_DMG_NAME}" 2>&1)
-MOUNT_DIR=$(echo "${MOUNT_OUTPUT}" | grep -o '/Volumes/.*$' | head -1)
-
-if [ -z "${MOUNT_DIR}" ]; then
-    echo "错误: 无法挂载 DMG"
-    echo "挂载输出: ${MOUNT_OUTPUT}"
+# 验证 DMG 是否创建成功
+if [ ! -f "${DMG_NAME}" ]; then
+    echo "❌ 错误: DMG 文件未生成"
     exit 1
 fi
 
-# 去除可能的空格和换行
-MOUNT_DIR=$(echo "${MOUNT_DIR}" | xargs)
-echo "DMG 已挂载到: ${MOUNT_DIR}"
-
-# 等待挂载完成
-sleep 2
-
-# 设置 DMG 窗口属性 (仅在有 GUI 的环境中执行)
-echo "配置 DMG 窗口..."
-
-# 检查是否在 CI 环境或无头环境
-if [ -n "$CI" ] || [ -z "$DISPLAY" ]; then
-    echo "检测到 CI/无头环境,跳过 AppleScript 窗口配置"
-    # 在 CI 环境中,直接使用命令行设置基本属性
-    if [ -f "${DMG_BACKGROUND}" ]; then
-        echo "背景图已包含在 DMG 中"
-    fi
-else
-    # 在本地有 GUI 的环境中执行 AppleScript
-    if [ -f "${DMG_BACKGROUND}" ]; then
-        cat > /tmp/dmg_setup.applescript <<EOF
-tell application "Finder"
-    tell disk "${VOLUME_NAME}"
-        open
-        set current view of container window to icon view
-        set toolbar visible of container window to false
-        set statusbar visible of container window to false
-        set the bounds of container window to {100, 100, 600, 450}
-        set viewOptions to the icon view options of container window
-        set arrangement of viewOptions to not arranged
-        set icon size of viewOptions to 100
-        set background picture of viewOptions to file ".background:${DMG_BACKGROUND}"
-
-        -- 设置图标位置
-        set position of item "${APP_NAME}.app" of container window to {125, 180}
-        set position of item "Applications" of container window to {375, 180}
-
-        close
-        open
-        update without registering applications
-        delay 2
-    end tell
-end tell
-EOF
-        osascript /tmp/dmg_setup.applescript || echo "警告: AppleScript 执行失败,但继续构建"
-    else
-        # 简化版布局(无背景图)
-        cat > /tmp/dmg_setup_simple.applescript <<EOF
-tell application "Finder"
-    tell disk "${VOLUME_NAME}"
-        open
-        set current view of container window to icon view
-        set toolbar visible of container window to false
-        set statusbar visible of container window to false
-        set the bounds of container window to {100, 100, 600, 450}
-        set viewOptions to the icon view options of container window
-        set arrangement of viewOptions to not arranged
-        set icon size of viewOptions to 100
-
-        -- 设置图标位置
-        set position of item "${APP_NAME}.app" of container window to {125, 180}
-        set position of item "Applications" of container window to {375, 180}
-
-        close
-        open
-        update without registering applications
-        delay 2
-    end tell
-end tell
-EOF
-        osascript /tmp/dmg_setup_simple.applescript || echo "警告: AppleScript 执行失败,但继续构建"
-    fi
-fi
-
-# 设置权限 (确保挂载点存在)
-if [ -d "${MOUNT_DIR}" ]; then
-    chmod -Rf go-w "${MOUNT_DIR}" 2>/dev/null || true
-    sync
-else
-    echo "警告: 挂载目录不存在,跳过权限设置"
-fi
-
-# 同步并卸载
-echo "卸载 DMG..."
-if [ -d "${MOUNT_DIR}" ]; then
-    sync
-    sleep 1
-    hdiutil detach "${MOUNT_DIR}" -quiet || {
-        echo "尝试强制卸载..."
-        hdiutil detach "${MOUNT_DIR}" -force || {
-            echo "警告: 卸载失败,尝试继续..."
-            # 在某些情况下即使卸载失败也可以继续
-        }
-    }
-else
-    echo "警告: 挂载目录已不存在,跳过卸载"
-fi
-
-# 转换为压缩的只读 DMG
-echo "压缩 DMG..."
-rm -f "${DMG_NAME}"
-hdiutil convert "${TEMP_DMG_NAME}" \
-    -format UDZO \
-    -imagekey zlib-level=9 \
-    -o "${DMG_NAME}"
-
-# 验证 DMG
-echo "验证 DMG..."
-hdiutil verify "${DMG_NAME}"
-
-echo "✅ DMG 创建完成: ${DMG_NAME}"
+echo "========================================"
+echo "✅ DMG 创建成功!"
+echo "文件: ${DMG_NAME}"
 ls -lh "${DMG_NAME}"
+echo "========================================"
