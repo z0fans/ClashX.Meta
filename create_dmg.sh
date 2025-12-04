@@ -62,18 +62,36 @@ hdiutil create -srcfolder "${TEMP_DIR}" \
 
 # 挂载临时 DMG
 echo "挂载 DMG..."
-MOUNT_DIR=$(hdiutil attach -readwrite -noverify -noautoopen "${TEMP_DMG_NAME}" | grep Volumes | awk '{print $3}')
+MOUNT_OUTPUT=$(hdiutil attach -readwrite -noverify -noautoopen "${TEMP_DMG_NAME}" 2>&1)
+MOUNT_DIR=$(echo "${MOUNT_OUTPUT}" | grep -o '/Volumes/.*$' | head -1)
 
 if [ -z "${MOUNT_DIR}" ]; then
     echo "错误: 无法挂载 DMG"
+    echo "挂载输出: ${MOUNT_OUTPUT}"
     exit 1
 fi
 
+# 去除可能的空格和换行
+MOUNT_DIR=$(echo "${MOUNT_DIR}" | xargs)
 echo "DMG 已挂载到: ${MOUNT_DIR}"
 
-# 设置 DMG 窗口属性
+# 等待挂载完成
+sleep 2
+
+# 设置 DMG 窗口属性 (仅在有 GUI 的环境中执行)
 echo "配置 DMG 窗口..."
-cat > /tmp/dmg_setup.applescript <<EOF
+
+# 检查是否在 CI 环境或无头环境
+if [ -n "$CI" ] || [ -z "$DISPLAY" ]; then
+    echo "检测到 CI/无头环境,跳过 AppleScript 窗口配置"
+    # 在 CI 环境中,直接使用命令行设置基本属性
+    if [ -f "${DMG_BACKGROUND}" ]; then
+        echo "背景图已包含在 DMG 中"
+    fi
+else
+    # 在本地有 GUI 的环境中执行 AppleScript
+    if [ -f "${DMG_BACKGROUND}" ]; then
+        cat > /tmp/dmg_setup.applescript <<EOF
 tell application "Finder"
     tell disk "${VOLUME_NAME}"
         open
@@ -97,13 +115,10 @@ tell application "Finder"
     end tell
 end tell
 EOF
-
-# 执行 AppleScript (如果背景图存在)
-if [ -f "${DMG_BACKGROUND}" ]; then
-    osascript /tmp/dmg_setup.applescript || true
-else
-    # 简化版布局(无背景图)
-    cat > /tmp/dmg_setup_simple.applescript <<EOF
+        osascript /tmp/dmg_setup.applescript || echo "警告: AppleScript 执行失败,但继续构建"
+    else
+        # 简化版布局(无背景图)
+        cat > /tmp/dmg_setup_simple.applescript <<EOF
 tell application "Finder"
     tell disk "${VOLUME_NAME}"
         open
@@ -126,19 +141,33 @@ tell application "Finder"
     end tell
 end tell
 EOF
-    osascript /tmp/dmg_setup_simple.applescript || true
+        osascript /tmp/dmg_setup_simple.applescript || echo "警告: AppleScript 执行失败,但继续构建"
+    fi
 fi
 
-# 设置权限
-chmod -Rf go-w "${MOUNT_DIR}" || true
+# 设置权限 (确保挂载点存在)
+if [ -d "${MOUNT_DIR}" ]; then
+    chmod -Rf go-w "${MOUNT_DIR}" 2>/dev/null || true
+    sync
+else
+    echo "警告: 挂载目录不存在,跳过权限设置"
+fi
 
 # 同步并卸载
-sync
 echo "卸载 DMG..."
-hdiutil detach "${MOUNT_DIR}" -quiet || {
-    echo "尝试强制卸载..."
-    hdiutil detach "${MOUNT_DIR}" -force
-}
+if [ -d "${MOUNT_DIR}" ]; then
+    sync
+    sleep 1
+    hdiutil detach "${MOUNT_DIR}" -quiet || {
+        echo "尝试强制卸载..."
+        hdiutil detach "${MOUNT_DIR}" -force || {
+            echo "警告: 卸载失败,尝试继续..."
+            # 在某些情况下即使卸载失败也可以继续
+        }
+    }
+else
+    echo "警告: 挂载目录已不存在,跳过卸载"
+fi
 
 # 转换为压缩的只读 DMG
 echo "压缩 DMG..."
