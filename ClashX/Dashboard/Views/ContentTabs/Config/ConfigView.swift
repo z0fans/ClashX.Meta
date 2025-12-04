@@ -157,7 +157,7 @@ struct ConfigView: View {
 		], alignment: .leading) {
 			
 			
-			ConfigItemView(name: "Enable TUN Device") {
+			ConfigItemView(name: NSLocalizedString("Tun Mode", comment: "")) {
 				Toggle("", isOn: $enableTUNDevice)
 					.toggleStyle(toggleStyle)
 			}
