@@ -78,6 +78,7 @@
 		01F335D82AD10D0B0048AF77 /* ClashConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F915A4612366ADEF004840BE /* ClashConnection.swift */; };
 		01F335D92AD10D0B0048AF77 /* ConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977FAAD23669D6400C17F1F /* ConnectionManager.swift */; };
 		01F335DA2AD10D0B0048AF77 /* StatusItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495340B220DE68C300B0D3FF /* StatusItemView.swift */; };
+		39643364623363632D336162 /* CustomTextLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65646162393832622D636161 /* CustomTextLabel.swift */; };
 		01F335DB2AD10D0B0048AF77 /* SystemProxyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F935B2FB23085515009E4D33 /* SystemProxyManager.swift */; };
 		01F335DC2AD10D0B0048AF77 /* LaunchAtLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495A44D220D267D000888A0A /* LaunchAtLogin.swift */; };
 		01F335DD2AD10D0B0048AF77 /* Combine+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4991D2312A565E6A00978143 /* Combine+Ext.swift */; };
@@ -301,6 +302,7 @@
 		4952C3CF2117027C004A4FA8 /* ConfigFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigFileManager.swift; sourceTree = "<group>"; };
 		495340AF20DE5F7200B0D3FF /* StatusItemView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = StatusItemView.xib; path = ClashX/Views/StatusItem/StatusItemView.xib; sourceTree = SOURCE_ROOT; };
 		495340B220DE68C300B0D3FF /* StatusItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusItemView.swift; sourceTree = "<group>"; };
+		65646162393832622D636161 /* CustomTextLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextLabel.swift; sourceTree = "<group>"; };
 		495A44D220D267D000888A0A /* LaunchAtLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAtLogin.swift; sourceTree = "<group>"; };
 		495BFB8721919B9800C8779D /* RemoteConfigManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigManager.swift; sourceTree = "<group>"; };
 		496322212AA5D89E00854231 /* UpdateExternalResourceAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateExternalResourceAction.swift; sourceTree = "<group>"; };
@@ -763,6 +765,7 @@
 			children = (
 				495340AF20DE5F7200B0D3FF /* StatusItemView.xib */,
 				495340B220DE68C300B0D3FF /* StatusItemView.swift */,
+				65646162393832622D636161 /* CustomTextLabel.swift */,
 				49D6A45129AEEC15006487EF /* StatusItemTool.swift */,
 				49D6A45529AEEC55006487EF /* StatusItemViewProtocol.swift */,
 			);
@@ -1024,6 +1027,7 @@
 				01F335D82AD10D0B0048AF77 /* ClashConnection.swift in Sources */,
 				01F335D92AD10D0B0048AF77 /* ConnectionManager.swift in Sources */,
 				01F335DA2AD10D0B0048AF77 /* StatusItemView.swift in Sources */,
+				39643364623363632D336162 /* CustomTextLabel.swift in Sources */,
 				01F335DB2AD10D0B0048AF77 /* SystemProxyManager.swift in Sources */,
 				01F335DC2AD10D0B0048AF77 /* LaunchAtLogin.swift in Sources */,
 				01F335DD2AD10D0B0048AF77 /* Combine+Ext.swift in Sources */,
