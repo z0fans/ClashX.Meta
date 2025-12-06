@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: macos-26
     permissions:
       contents: write
     steps:
@@ -60,7 +60,7 @@ jobs:
 
     - name: build
       run: |
-        xcodebuild archive -project ClashX.xcodeproj -scheme "ClashX Meta" -archivePath archive/ClashX.xcarchive -showBuildTimingSummary -allowProvisioningUpdates
+        xcodebuild archive -project ClashX.xcodeproj -scheme ClashX\ Meta -archivePath archive/ClashX.xcarchive -showBuildTimingSummary -allowProvisioningUpdates
 
     - name: create dmg
       run: bash create_dmg.sh
