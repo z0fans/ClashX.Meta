@@ -5,7 +5,6 @@
 //
 
 import SwiftUI
-@_spi(Advanced) import SwiftUIIntrospect
 
 @available(macOS 10.15, *)
 class ProxiesSearchString: ObservableObject, Identifiable {
@@ -15,22 +14,18 @@ class ProxiesSearchString: ObservableObject, Identifiable {
 
 @available(macOS 10.15, *)
 struct ProxiesView: View {
-	
+
 	@ObservedObject var proxyStorage = DBProxyStorage()
-	
+
 	@State private var searchString = ProxiesSearchString()
 	@State private var isGlobalMode = false
-	
+
 	@StateObject private var hideProxyNames = HideProxyNames()
-	
+
     var body: some View {
 		NavigationView {
             List(proxyStorage.groups.filter({ !$0.hidden }), id: \.id) { group in
 				ProxyGroupRowView(proxyGroup: group)
-			}
-			.introspect(.table, on: .macOS(.v12...)) {
-				$0.refusesFirstResponder = true
-				$0.doubleAction = nil
 			}
 			.listStyle(.plain)
 			EmptyView()

@@ -5,7 +5,6 @@
 //
 
 import SwiftUI
-@_spi(Advanced) import SwiftUIIntrospect
 
 @available(macOS 10.15, *)
 struct ProvidersView: View {
@@ -86,10 +85,6 @@ struct ProvidersView: View {
                     Text("Proxy Provider Inline")
                 }
             }
-		}
-		.introspect(.table, on: .macOS(.v12...)) {
-			$0.refusesFirstResponder = true
-			$0.doubleAction = nil
 		}
 		.listStyle(.plain)
 	}
