@@ -15,14 +15,26 @@ class DashboardManager: NSObject {
 	
 	override init() {
 	}
-	
+
+	// 检查系统是否支持 SwiftUI
+	var isSwiftUIAvailable: Bool {
+		if #available(macOS 10.15, *) {
+			return true
+		}
+		return false
+	}
+
 	var useSwiftUI: Bool {
 		get {
-			return ConfigManager.useSwiftUIDashboard
+			return isSwiftUIAvailable && ConfigManager.useSwiftUIDashboard
 		}
 		set {
+			guard isSwiftUIAvailable else {
+				Logger.log("[Dashboard] SwiftUI not available on this system, falling back to Web Dashboard")
+				return
+			}
 			ConfigManager.useSwiftUIDashboard = newValue
-			
+
 			if newValue {
 				clashWebWindowController?.close()
 			} else {
@@ -59,6 +71,12 @@ class DashboardManager: NSObject {
 
 extension DashboardManager {
 	func showSwiftUIWindow(_ sender: NSMenuItem?) {
+		guard #available(macOS 10.15, *) else {
+			Logger.log("[Dashboard] SwiftUI requires macOS 10.15+, using Web Dashboard")
+			showWebWindow(sender)
+			return
+		}
+
 		if dashboardWindowController == nil {
 			dashboardWindowController = DashboardWindowController.create()
 			dashboardWindowController?.onWindowClose = {
@@ -66,10 +84,10 @@ extension DashboardManager {
 				self?.dashboardWindowController = nil
 			}
 		}
-		
+
 		dashboardWindowController?.set(ConfigManager.apiUrl, secret: ConfigManager.shared.overrideSecret ?? ConfigManager.shared.apiSecret)
-		
+
 		dashboardWindowController?.showWindow(sender)
 	}
-	
+
 }

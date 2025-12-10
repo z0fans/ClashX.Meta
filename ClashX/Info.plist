@@ -128,9 +128,12 @@
 	</dict>
 	<key>SUDisallowSelectChannel</key>
 	<false/>
+	<!-- 兼容版本禁用自动更新,请手动下载更新 -->
+	<!--
 	<key>SUFeedURL</key>
 	<string>https://raw.githubusercontent.com/z0fans/ClashX.Meta/refs/heads/sparkle/appcast.xml</string>
 	<key>SUPublicEDKey</key>
 	<string>zUo6br6+dUWuN1oUWUYq4GNzl8DiEJKOMkMVCfFlR4M=</string>
+	-->
 </dict>
 </plist>

@@ -9,6 +9,7 @@
 import Cocoa
 import SwiftUI
 
+@available(macOS 10.15, *)
 public class DashboardWindowController: NSWindowController {
     public var onWindowClose: (() -> Void)?
 
@@ -34,6 +35,7 @@ public class DashboardWindowController: NSWindowController {
 	}
 }
 
+@available(macOS 10.15, *)
 extension DashboardWindowController: NSWindowDelegate {
 	public func windowWillClose(_ notification: Notification) {
         NSApp.setActivationPolicy(.accessory)
@@ -46,6 +48,7 @@ extension DashboardWindowController: NSWindowDelegate {
     }
 }
 
+@available(macOS 10.15, *)
 class DashboardViewContoller: NSViewController {
     let contentView = NSHostingView(rootView: DashboardView())
     let minSize = NSSize(width: 920, height: 580)
