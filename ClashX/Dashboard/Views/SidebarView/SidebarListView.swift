@@ -7,6 +7,7 @@
 import SwiftUI
 @_spi(Advanced) import SwiftUIIntrospect
 
+@available(macOS 10.15, *)
 struct SidebarListView: View {
 	
 	@Binding var selection: SidebarItem?

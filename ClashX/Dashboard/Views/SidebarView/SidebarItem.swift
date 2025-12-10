@@ -7,6 +7,7 @@
 import Cocoa
 import SwiftUI
 
+@available(macOS 10.15, *)
 enum SidebarItem: String, Identifiable, CaseIterable {
     var id: String {
         self.rawValue

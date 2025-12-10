@@ -7,6 +7,7 @@
 import Cocoa
 import SwiftUI
 
+@available(macOS 10.15, *)
 class DBProviderStorage: ObservableObject {
 	@Published var proxyProviders = [DBProxyProvider]()
 	@Published var ruleProviders = [DBRuleProvider]()
@@ -15,6 +16,7 @@ class DBProviderStorage: ObservableObject {
 	
 }
 
+@available(macOS 10.15, *)
 class DBProxyProvider: ObservableObject, Identifiable {
 	let id = UUID().uuidString
 	
@@ -83,6 +85,7 @@ class DBProxyProvider: ObservableObject, Identifiable {
 	}
 }
 
+@available(macOS 10.15, *)
 class DBRuleProvider: ObservableObject, Identifiable {
 	let id: String
 	

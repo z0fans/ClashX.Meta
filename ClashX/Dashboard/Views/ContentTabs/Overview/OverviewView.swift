@@ -7,6 +7,7 @@
 import SwiftUI
 import DSFSparkline
 
+@available(macOS 10.15, *)
 struct OverviewView: View {
 	
 	@EnvironmentObject var data: ClashOverviewData

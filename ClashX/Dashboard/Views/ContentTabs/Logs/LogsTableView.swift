@@ -7,6 +7,7 @@
 import Cocoa
 import SwiftUI
 
+@available(macOS 10.15, *)
 struct LogsTableView<Item: Hashable>: NSViewRepresentable {
 	
 	enum TableColumn: String, CaseIterable {
@@ -19,10 +20,12 @@ struct LogsTableView<Item: Hashable>: NSViewRepresentable {
 	var filterString: String
     var logFilter: DashboardViewContoller.LogFilter
 	
+ @available(macOS 10.15, *)
 	class NonRespondingScrollView: NSScrollView {
 		override var acceptsFirstResponder: Bool { false }
 	}
 
+ @available(macOS 10.15, *)
 	class NonRespondingTableView: NSTableView {
 		override var acceptsFirstResponder: Bool { false }
 	}
@@ -119,6 +122,7 @@ struct LogsTableView<Item: Hashable>: NSViewRepresentable {
 	}
 	
 	
+ @available(macOS 10.15, *)
 	class Coordinator: NSObject, NSTableViewDelegate, NSTableViewDataSource {
 
 		var parent: LogsTableView

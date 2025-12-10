@@ -6,6 +6,7 @@
 
 import SwiftUI
 
+@available(macOS 10.15, *)
 struct RuleProviderView: View {
 	
 	@State var provider: DBRuleProvider

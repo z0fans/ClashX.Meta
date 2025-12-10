@@ -7,6 +7,7 @@
 import Foundation
 import SwiftUI
 
+@available(macOS 10.15, *)
 struct Show: ViewModifier {
 	let isVisible: Bool
 
@@ -20,6 +21,7 @@ struct Show: ViewModifier {
 	}
 }
 
+@available(macOS 10.15, *)
 extension View {
 	func show(isVisible: Bool) -> some View {
 		ModifiedContent(content: self, modifier: Show(isVisible: isVisible))

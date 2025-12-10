@@ -7,6 +7,7 @@
 import SwiftUI
 import AppKit
 
+@available(macOS 10.15, *)
 struct ProgressButton: View {
 	
 	@State var title: String

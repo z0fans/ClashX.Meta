@@ -6,6 +6,7 @@
 
 import SwiftUI
 
+@available(macOS 10.15, *)
 struct SidebarLabel: View {
 	@State var item: SidebarItem
 	
@@ -19,6 +20,7 @@ struct SidebarLabel: View {
     }
 }
 
+@available(macOS 10.15, *)
 struct SidebarLabel_Previews: PreviewProvider {
     static var previews: some View {
 		SidebarLabel(item: .overview)

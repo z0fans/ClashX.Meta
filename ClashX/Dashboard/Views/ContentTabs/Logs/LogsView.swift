@@ -6,6 +6,7 @@
 
 import SwiftUI
 
+@available(macOS 10.15, *)
 struct LogsView: View {
 	
 	@EnvironmentObject var logStorage: ClashLogStorage
@@ -56,6 +57,7 @@ struct LogsView: View {
     }
 }
 
+@available(macOS 10.15, *)
 struct LogsView_Previews: PreviewProvider {
     static var previews: some View {
         LogsView()

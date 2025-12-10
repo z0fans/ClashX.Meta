@@ -7,13 +7,14 @@
 import Cocoa
 import SwiftUI
 
+@available(macOS 10.15, *)
 class DBProxyStorage: ObservableObject {
 	@Published var groups = [DBProxyGroup]()
-	
+
 	init() {
-		
+
 	}
-	
+
 	init(_ resp: ClashProxyResp) {
 		groups = resp.proxyGroups.map {
 			DBProxyGroup($0, resp: resp)
@@ -21,6 +22,7 @@ class DBProxyStorage: ObservableObject {
 	}
 }
 
+@available(macOS 10.15, *)
 class DBProxyGroup: ObservableObject, Identifiable {
 	let id = UUID().uuidString
 	@Published var name: ClashProxyName
@@ -32,12 +34,12 @@ class DBProxyGroup: ObservableObject, Identifiable {
 			}
 		}
 	}
-	
+
 	@Published var proxies: [DBProxy]
 	@Published var currentProxy: DBProxy?
-	
+
     @Published var hidden: Bool
-    
+
 	init(_ group: ClashProxy, resp: ClashProxyResp) {
 		name = group.name
 		type = group.type
@@ -47,37 +49,38 @@ class DBProxyGroup: ObservableObject, Identifiable {
 		proxies = group.all?.compactMap { name in
 			resp.proxiesMap[name]
 		}.map(DBProxy.init) ?? []
-		
+
 		currentProxy = proxies.first {
 			$0.name == now
 		}
 	}
 }
 
+@available(macOS 10.15, *)
 class DBProxy: ObservableObject {
 	let id: String
 	@Published var name: ClashProxyName
 	@Published var type: ClashProxyType
 	@Published var udpString: String
 	@Published var tfo: Bool
-	
+
 	var delay: Int {
 		didSet {
 			delayString = DBProxy.delayString(delay)
 			delayColor = DBProxy.delayColor(delay)
 		}
 	}
-	
+
 	@Published var delayString: String
 	@Published var delayColor: Color
-	
+
 	init(_ proxy: ClashProxy) {
 		id = proxy.id ?? UUID().uuidString
 		name = proxy.name
 		type = proxy.type
 		tfo = proxy.tfo
 		delay = proxy.history.last?.delayInt ?? 0
-				
+
 		udpString = {
 			if proxy.udp {
 				return "UDP"
@@ -90,7 +93,7 @@ class DBProxy: ObservableObject {
 		delayString = DBProxy.delayString(delay)
 		delayColor = DBProxy.delayColor(delay)
 	}
-	
+
 	static func delayString(_ delay: Int) -> String {
 		switch delay {
 		case 0:
@@ -99,10 +102,10 @@ class DBProxy: ObservableObject {
 			return "\(delay) ms"
 		}
 	}
-	
+
 	static func delayColor(_ delay: Int) -> Color {
 		let httpsTest = ConfigManager.shared.benchMarkUrl.hasPrefix("https://")
-		
+
 		switch delay {
 		case 0:
             return .red
@@ -121,6 +124,7 @@ class DBProxy: ObservableObject {
 }
 
 
+@available(macOS 10.15, *)
 extension String {
     var hiddenID: String {
         guard UUID(uuidString: self) != nil else { return "" }

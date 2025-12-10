@@ -6,6 +6,7 @@
 
 import SwiftUI
 
+@available(macOS 10.15, *)
 struct RuleItemView: View {
 	@State var index: Int
 	@State var rule: ClashRule
@@ -59,6 +60,7 @@ struct RuleItemView: View {
 	
 }
 
+@available(macOS 10.15, *)
 struct RulesRowView_Previews: PreviewProvider {
     static var previews: some View {
 		RuleItemView(index: 114, rule: .init(type: "DIRECT", payload: "cn", proxy: "GeoSite"))

@@ -6,6 +6,7 @@
 import SwiftUI
 import AppKit
 
+@available(macOS 10.15, *)
 struct ConnectionsTableView<Item: Hashable>: NSViewRepresentable {
 
 	enum TableColumn: String, CaseIterable {
@@ -36,10 +37,12 @@ struct ConnectionsTableView<Item: Hashable>: NSViewRepresentable {
 	
 	var byteCountFormatter = ByteCountFormatter()
 
+ @available(macOS 10.15, *)
 	class NonRespondingScrollView: NSScrollView {
 		override var acceptsFirstResponder: Bool { false }
 	}
 
+ @available(macOS 10.15, *)
 	class NonRespondingTableView: NSTableView {
 		override var acceptsFirstResponder: Bool { false }
 	}
@@ -186,6 +189,7 @@ struct ConnectionsTableView<Item: Hashable>: NSViewRepresentable {
 		Coordinator(parent: self)
 	}
 	
+ @available(macOS 10.15, *)
 	class Coordinator: NSObject, NSTableViewDelegate, NSTableViewDataSource {
 
 		var parent: ConnectionsTableView

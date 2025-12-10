@@ -8,6 +8,7 @@ import Cocoa
 import SwiftUI
 import CocoaLumberjackSwift
 
+@available(macOS 10.15, *)
 class ClashApiDatasStorage: NSObject, ObservableObject {
 	
 	@Published var overviewData = ClashOverviewData()
@@ -23,6 +24,7 @@ class ClashApiDatasStorage: NSObject, ObservableObject {
 	}
 }
 
+@available(macOS 10.15, *)
 extension ClashApiDatasStorage: ApiRequestStreamDelegate {
 	func streamStatusChanged() {
 		print("streamStatusChanged", ConfigManager.shared.isRunning)
@@ -56,6 +58,7 @@ extension ClashApiDatasStorage: ApiRequestStreamDelegate {
 
 fileprivate let TrafficHistoryLimit = 120
 
+@available(macOS 10.15, *)
 class ClashOverviewData: ObservableObject, Identifiable {
 	let id = UUID().uuidString
 	
@@ -124,9 +127,11 @@ class ClashOverviewData: ObservableObject, Identifiable {
 	}
 }
 
+@available(macOS 10.15, *)
 class ClashLogStorage: ObservableObject {
 	@Published var logs = [ClashLog]()
 	
+ @available(macOS 10.15, *)
 	class ClashLog: NSObject, ObservableObject {
 		let id: String
 		
@@ -161,6 +166,7 @@ class ClashLogStorage: ObservableObject {
 	}
 }
 
+@available(macOS 10.15, *)
 class ClashConnsStorage: ObservableObject {
 	@Published var conns = [DBConnection]()
 }

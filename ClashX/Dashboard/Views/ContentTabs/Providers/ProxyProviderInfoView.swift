@@ -6,6 +6,7 @@
 
 import SwiftUI
 
+@available(macOS 10.15, *)
 struct ProxyProviderInfoView: View {
 	
 	@ObservedObject var provider: DBProxyProvider

@@ -7,11 +7,13 @@
 import SwiftUI
 @_spi(Advanced) import SwiftUIIntrospect
 
+@available(macOS 10.15, *)
 class ProxiesSearchString: ObservableObject, Identifiable {
 	let id = UUID().uuidString
 	@Published var string: String = ""
 }
 
+@available(macOS 10.15, *)
 struct ProxiesView: View {
 	
 	@ObservedObject var proxyStorage = DBProxyStorage()

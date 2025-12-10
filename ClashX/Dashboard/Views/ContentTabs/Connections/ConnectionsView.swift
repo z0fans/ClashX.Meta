@@ -6,6 +6,7 @@
 
 import SwiftUI
 
+@available(macOS 10.15, *)
 struct ConnectionsView: View {
 	
 	@EnvironmentObject var data: ClashConnsStorage
@@ -39,6 +40,7 @@ struct ConnectionsView: View {
 	}
 }
 
+@available(macOS 10.15, *)
 struct ConnectionsView_Previews: PreviewProvider {
     static var previews: some View {
         ConnectionsView()

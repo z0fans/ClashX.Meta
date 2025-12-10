@@ -6,6 +6,7 @@
 
 import SwiftUI
 
+@available(macOS 10.15, *)
 struct OverviewTopItemView: View {
 	
 	@State var name: String
@@ -29,6 +30,7 @@ struct OverviewTopItemView: View {
     }
 }
 
+@available(macOS 10.15, *)
 struct OverviewTopItemView_Previews: PreviewProvider {
 	@State static var value: String = "Value"
 	static var previews: some View {

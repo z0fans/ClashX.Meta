@@ -6,6 +6,7 @@
 
 import SwiftUI
 
+@available(macOS 10.15, *)
 struct ConfigView: View {
 	
 	@State var httpPort: Int = 0

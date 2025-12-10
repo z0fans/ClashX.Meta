@@ -195,6 +195,7 @@ class DashboardViewContoller: NSViewController {
 }
 
 
+@available(macOS 10.15, *)
 extension NSToolbarItem.Identifier {
 	static let hideNamesItem = NSToolbarItem.Identifier("HideNamesItem")
 	static let stopConnsItem = NSToolbarItem.Identifier("StopConnsItem")
@@ -203,6 +204,7 @@ extension NSToolbarItem.Identifier {
 	static let searchItem = NSToolbarItem.Identifier("SearchItem")
 }
 
+@available(macOS 10.15, *)
 extension DashboardViewContoller: NSSearchFieldDelegate {
 	
 	func controlTextDidChange(_ obj: Notification) {
@@ -247,6 +249,7 @@ extension DashboardViewContoller: NSSearchFieldDelegate {
     
 }
 
+@available(macOS 10.15, *)
 extension DashboardViewContoller: NSToolbarDelegate, NSToolbarItemValidation {
 	
 	func validateToolbarItem(_ item: NSToolbarItem) -> Bool {

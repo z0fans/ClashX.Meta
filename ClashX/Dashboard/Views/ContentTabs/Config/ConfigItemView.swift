@@ -6,6 +6,7 @@
 
 import SwiftUI
 
+@available(macOS 10.15, *)
 struct ConfigItemView<Content: View>: View {
 	
 	@State var name: String
@@ -27,6 +28,7 @@ struct ConfigItemView<Content: View>: View {
 	}
 }
 
+@available(macOS 10.15, *)
 struct ConfigItemView_Previews: PreviewProvider {
     static var previews: some View {
 		ConfigItemView(name: "test") {

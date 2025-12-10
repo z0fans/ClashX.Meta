@@ -9,6 +9,7 @@ import DSFSparkline
 
 fileprivate let labelsCount = 4
 
+@available(macOS 10.15, *)
 struct TrafficGraphView: View {
 	@Binding var values: [CGFloat]
 	@State var graphColor: DSFColor
