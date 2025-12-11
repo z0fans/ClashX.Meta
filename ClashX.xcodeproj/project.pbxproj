@@ -15,46 +15,6 @@
 		019A239628657A7A00AE5698 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019A239528657A7A00AE5698 /* main.swift */; };
 		01BC9ABE2928EB5A00F9B177 /* MetaDNS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BC9ABD2928E5C600F9B177 /* MetaDNS.swift */; };
 		01BCDAAC2C9ECB3A0028FA94 /* DSFSparkline in Frameworks */ = {isa = PBXBuildFile; productRef = 01BCDAAB2C9ECB3A0028FA94 /* DSFSparkline */; };
-		01BCDAF02C9ECD010028FA94 /* DBProviderStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BCDABB2C9ECD010028FA94 /* DBProviderStorage.swift */; };
-		01BCDAF12C9ECD010028FA94 /* ProviderRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BCDAD42C9ECD010028FA94 /* ProviderRowView.swift */; };
-		01BCDAF22C9ECD010028FA94 /* DashboardViewContoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BCDAB92C9ECD010028FA94 /* DashboardViewContoller.swift */; };
-		01BCDAF32C9ECD010028FA94 /* ProxyGroupRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BCDADC2C9ECD010028FA94 /* ProxyGroupRowView.swift */; };
-		01BCDAF42C9ECD010028FA94 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BCDAEC2C9ECD010028FA94 /* DashboardView.swift */; };
-		01BCDAF52C9ECD010028FA94 /* Connections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BCDAC82C9ECD010028FA94 /* Connections.swift */; };
-		01BCDAF62C9ECD010028FA94 /* ConfigItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BCDAC52C9ECD010028FA94 /* ConfigItemView.swift */; };
-		01BCDAF72C9ECD010028FA94 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BCDAEB2C9ECD010028FA94 /* ColorExtension.swift */; };
-		01BCDAF82C9ECD010028FA94 /* OverviewTopItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BCDACF2C9ECD010028FA94 /* OverviewTopItemView.swift */; };
-		01BCDAF92C9ECD010028FA94 /* ConnectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BCDACA2C9ECD010028FA94 /* ConnectionsView.swift */; };
-		01BCDAFA2C9ECD010028FA94 /* TrafficGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BCDAD12C9ECD010028FA94 /* TrafficGraphView.swift */; };
-		01BCDAFB2C9ECD010028FA94 /* LogsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BCDACC2C9ECD010028FA94 /* LogsTableView.swift */; };
-		01BCDAFD2C9ECD010028FA94 /* ToolbarStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BCDABF2C9ECD010028FA94 /* ToolbarStore.swift */; };
-		01BCDAFE2C9ECD010028FA94 /* RuleItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BCDAE02C9ECD010028FA94 /* RuleItemView.swift */; };
-		01BCDAFF2C9ECD010028FA94 /* ConnectionsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BCDAC92C9ECD010028FA94 /* ConnectionsTableView.swift */; };
-		01BCDB002C9ECD010028FA94 /* DBConnectionSnapShot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BCDABA2C9ECD010028FA94 /* DBConnectionSnapShot.swift */; };
-		01BCDB012C9ECD010028FA94 /* ProxyNodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BCDADE2C9ECD010028FA94 /* ProxyNodeView.swift */; };
-		01BCDB022C9ECD010028FA94 /* ProxyProviderInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BCDAD62C9ECD010028FA94 /* ProxyProviderInfoView.swift */; };
-		01BCDB032C9ECD010028FA94 /* ProvidersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BCDAD52C9ECD010028FA94 /* ProvidersView.swift */; };
-		01BCDB042C9ECD010028FA94 /* ClashApiDatasStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BCDAEA2C9ECD010028FA94 /* ClashApiDatasStorage.swift */; };
-		01BCDB052C9ECD010028FA94 /* RulesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BCDAE12C9ECD010028FA94 /* RulesView.swift */; };
-		01BCDB062C9ECD010028FA94 /* RuleProviderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BCDAD92C9ECD010028FA94 /* RuleProviderView.swift */; };
-		01BCDB072C9ECD010028FA94 /* SidebarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BCDAE42C9ECD010028FA94 /* SidebarItem.swift */; };
-		01BCDB092C9ECD010028FA94 /* DBProxyStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BCDABC2C9ECD010028FA94 /* DBProxyStorage.swift */; };
-		01BCDB0A2C9ECD010028FA94 /* SwiftUIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BCDAEE2C9ECD010028FA94 /* SwiftUIViewExtensions.swift */; };
-		01BCDB0C2C9ECD010028FA94 /* NSTableViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BCDAED2C9ECD010028FA94 /* NSTableViewExtension.swift */; };
-		01BCDB0E2C9ECD010028FA94 /* ArrayExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BCDAE92C9ECD010028FA94 /* ArrayExtensions.swift */; };
-		01BCDB0F2C9ECD010028FA94 /* ProxyGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BCDADD2C9ECD010028FA94 /* ProxyGroupView.swift */; };
-		01BCDB102C9ECD010028FA94 /* ProxiesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BCDADB2C9ECD010028FA94 /* ProxiesView.swift */; };
-		01BCDB112C9ECD010028FA94 /* OverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BCDAD02C9ECD010028FA94 /* OverviewView.swift */; };
-		01BCDB122C9ECD010028FA94 /* ProviderProxiesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BCDAD32C9ECD010028FA94 /* ProviderProxiesView.swift */; };
-		01BCDB132C9ECD010028FA94 /* ConfigView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BCDAC62C9ECD010028FA94 /* ConfigView.swift */; };
-		01BCDB142C9ECD010028FA94 /* ProxyProvidersRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BCDAD72C9ECD010028FA94 /* ProxyProvidersRowView.swift */; };
-		01BCDB152C9ECD010028FA94 /* NotificationNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BCDABE2C9ECD010028FA94 /* NotificationNames.swift */; };
-		01BCDB162C9ECD010028FA94 /* LogsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BCDACD2C9ECD010028FA94 /* LogsView.swift */; };
-		01BCDB172C9ECD010028FA94 /* SidebarListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BCDAE62C9ECD010028FA94 /* SidebarListView.swift */; };
-		01BCDB182C9ECD010028FA94 /* RuleProvidersRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BCDAD82C9ECD010028FA94 /* RuleProvidersRowView.swift */; };
-		01BCDB1A2C9ECD010028FA94 /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BCDAE72C9ECD010028FA94 /* SidebarView.swift */; };
-		01BCDB1B2C9ECD010028FA94 /* SidebarLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BCDAE52C9ECD010028FA94 /* SidebarLabel.swift */; };
-		01BCDB1D2C9EE2CF0028FA94 /* ProgressButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BCDB1C2C9EE2CF0028FA94 /* ProgressButton.swift */; };
 		01BCDB212C9EEE260028FA94 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 01BCDB202C9EEE260028FA94 /* Sparkle */; };
 		01CA6BC12B6A1B3100E386D6 /* MetaServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CA6BBF2B6A1B3100E386D6 /* MetaServer.swift */; };
 		01CA6BC22B6A1B3100E386D6 /* MetaServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CA6BBF2B6A1B3100E386D6 /* MetaServer.swift */; };
@@ -77,7 +37,6 @@
 		01F335D82AD10D0B0048AF77 /* ClashConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F915A4612366ADEF004840BE /* ClashConnection.swift */; };
 		01F335D92AD10D0B0048AF77 /* ConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977FAAD23669D6400C17F1F /* ConnectionManager.swift */; };
 		01F335DA2AD10D0B0048AF77 /* StatusItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495340B220DE68C300B0D3FF /* StatusItemView.swift */; };
-		39643364623363632D336162 /* CustomTextLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65646162393832622D636161 /* CustomTextLabel.swift */; };
 		01F335DB2AD10D0B0048AF77 /* SystemProxyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F935B2FB23085515009E4D33 /* SystemProxyManager.swift */; };
 		01F335DC2AD10D0B0048AF77 /* LaunchAtLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495A44D220D267D000888A0A /* LaunchAtLogin.swift */; };
 		01F335DD2AD10D0B0048AF77 /* Combine+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4991D2312A565E6A00978143 /* Combine+Ext.swift */; };
@@ -175,6 +134,7 @@
 		01F3363E2AD10D0B0048AF77 /* country.mmdb.gz in Resources */ = {isa = PBXBuildFile; fileRef = 01B2274A29B845F100FE35C9 /* country.mmdb.gz */; };
 		01F336402AD10D0B0048AF77 /* com.metacubex.ClashX.ProxyConfigHelper in Copy Files */ = {isa = PBXBuildFile; fileRef = F9A7C0692306E874007163C7 /* com.metacubex.ClashX.ProxyConfigHelper */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		01FBC6312B9C2B0800810BFF /* ClashProcess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FBC62F2B9C2B0800810BFF /* ClashProcess.swift */; };
+		39643364623363632D336162 /* CustomTextLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65646162393832622D636161 /* CustomTextLabel.swift */; };
 		491E6203258A424D00313AEF /* CommonUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 491E61FD258A424500313AEF /* CommonUtils.m */; };
 		F935B2FA23083EE6009E4D33 /* ProxySettingTool.m in Sources */ = {isa = PBXBuildFile; fileRef = F935B2F923083EE6009E4D33 /* ProxySettingTool.m */; };
 /* End PBXBuildFile section */
@@ -229,46 +189,6 @@
 		01B1CB092A2E20C10073EA34 /* DashboardManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardManager.swift; sourceTree = "<group>"; };
 		01B2274A29B845F100FE35C9 /* country.mmdb.gz */ = {isa = PBXFileReference; lastKnownFileType = archive.gzip; path = country.mmdb.gz; sourceTree = "<group>"; };
 		01BC9ABD2928E5C600F9B177 /* MetaDNS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaDNS.swift; sourceTree = "<group>"; };
-		01BCDAB92C9ECD010028FA94 /* DashboardViewContoller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewContoller.swift; sourceTree = "<group>"; };
-		01BCDABA2C9ECD010028FA94 /* DBConnectionSnapShot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBConnectionSnapShot.swift; sourceTree = "<group>"; };
-		01BCDABB2C9ECD010028FA94 /* DBProviderStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBProviderStorage.swift; sourceTree = "<group>"; };
-		01BCDABC2C9ECD010028FA94 /* DBProxyStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBProxyStorage.swift; sourceTree = "<group>"; };
-		01BCDABE2C9ECD010028FA94 /* NotificationNames.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationNames.swift; sourceTree = "<group>"; };
-		01BCDABF2C9ECD010028FA94 /* ToolbarStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarStore.swift; sourceTree = "<group>"; };
-		01BCDAC52C9ECD010028FA94 /* ConfigItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigItemView.swift; sourceTree = "<group>"; };
-		01BCDAC62C9ECD010028FA94 /* ConfigView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigView.swift; sourceTree = "<group>"; };
-		01BCDAC82C9ECD010028FA94 /* Connections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Connections.swift; sourceTree = "<group>"; };
-		01BCDAC92C9ECD010028FA94 /* ConnectionsTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionsTableView.swift; sourceTree = "<group>"; };
-		01BCDACA2C9ECD010028FA94 /* ConnectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionsView.swift; sourceTree = "<group>"; };
-		01BCDACC2C9ECD010028FA94 /* LogsTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogsTableView.swift; sourceTree = "<group>"; };
-		01BCDACD2C9ECD010028FA94 /* LogsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogsView.swift; sourceTree = "<group>"; };
-		01BCDACF2C9ECD010028FA94 /* OverviewTopItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewTopItemView.swift; sourceTree = "<group>"; };
-		01BCDAD02C9ECD010028FA94 /* OverviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewView.swift; sourceTree = "<group>"; };
-		01BCDAD12C9ECD010028FA94 /* TrafficGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrafficGraphView.swift; sourceTree = "<group>"; };
-		01BCDAD32C9ECD010028FA94 /* ProviderProxiesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProviderProxiesView.swift; sourceTree = "<group>"; };
-		01BCDAD42C9ECD010028FA94 /* ProviderRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProviderRowView.swift; sourceTree = "<group>"; };
-		01BCDAD52C9ECD010028FA94 /* ProvidersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProvidersView.swift; sourceTree = "<group>"; };
-		01BCDAD62C9ECD010028FA94 /* ProxyProviderInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProxyProviderInfoView.swift; sourceTree = "<group>"; };
-		01BCDAD72C9ECD010028FA94 /* ProxyProvidersRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProxyProvidersRowView.swift; sourceTree = "<group>"; };
-		01BCDAD82C9ECD010028FA94 /* RuleProvidersRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleProvidersRowView.swift; sourceTree = "<group>"; };
-		01BCDAD92C9ECD010028FA94 /* RuleProviderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleProviderView.swift; sourceTree = "<group>"; };
-		01BCDADB2C9ECD010028FA94 /* ProxiesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProxiesView.swift; sourceTree = "<group>"; };
-		01BCDADC2C9ECD010028FA94 /* ProxyGroupRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProxyGroupRowView.swift; sourceTree = "<group>"; };
-		01BCDADD2C9ECD010028FA94 /* ProxyGroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProxyGroupView.swift; sourceTree = "<group>"; };
-		01BCDADE2C9ECD010028FA94 /* ProxyNodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProxyNodeView.swift; sourceTree = "<group>"; };
-		01BCDAE02C9ECD010028FA94 /* RuleItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleItemView.swift; sourceTree = "<group>"; };
-		01BCDAE12C9ECD010028FA94 /* RulesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RulesView.swift; sourceTree = "<group>"; };
-		01BCDAE42C9ECD010028FA94 /* SidebarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarItem.swift; sourceTree = "<group>"; };
-		01BCDAE52C9ECD010028FA94 /* SidebarLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarLabel.swift; sourceTree = "<group>"; };
-		01BCDAE62C9ECD010028FA94 /* SidebarListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarListView.swift; sourceTree = "<group>"; };
-		01BCDAE72C9ECD010028FA94 /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
-		01BCDAE92C9ECD010028FA94 /* ArrayExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtensions.swift; sourceTree = "<group>"; };
-		01BCDAEA2C9ECD010028FA94 /* ClashApiDatasStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClashApiDatasStorage.swift; sourceTree = "<group>"; };
-		01BCDAEB2C9ECD010028FA94 /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
-		01BCDAEC2C9ECD010028FA94 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
-		01BCDAED2C9ECD010028FA94 /* NSTableViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSTableViewExtension.swift; sourceTree = "<group>"; };
-		01BCDAEE2C9ECD010028FA94 /* SwiftUIViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIViewExtensions.swift; sourceTree = "<group>"; };
-		01BCDB1C2C9EE2CF0028FA94 /* ProgressButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressButton.swift; sourceTree = "<group>"; };
 		01C1462928962E4E00346AF3 /* com.metacubex.ClashX.ProxyConfigHelper.meta.gz */ = {isa = PBXFileReference; lastKnownFileType = archive.gzip; path = com.metacubex.ClashX.ProxyConfigHelper.meta.gz; sourceTree = "<group>"; };
 		01CA6BBF2B6A1B3100E386D6 /* MetaServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaServer.swift; sourceTree = "<group>"; };
 		01D567E12AD158B500CDA0AE /* MetaPrefs.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MetaPrefs.storyboard; sourceTree = "<group>"; };
@@ -300,7 +220,6 @@
 		4952C3CF2117027C004A4FA8 /* ConfigFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigFileManager.swift; sourceTree = "<group>"; };
 		495340AF20DE5F7200B0D3FF /* StatusItemView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = StatusItemView.xib; path = ClashX/Views/StatusItem/StatusItemView.xib; sourceTree = SOURCE_ROOT; };
 		495340B220DE68C300B0D3FF /* StatusItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusItemView.swift; sourceTree = "<group>"; };
-		65646162393832622D636161 /* CustomTextLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextLabel.swift; sourceTree = "<group>"; };
 		495A44D220D267D000888A0A /* LaunchAtLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAtLogin.swift; sourceTree = "<group>"; };
 		495BFB8721919B9800C8779D /* RemoteConfigManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigManager.swift; sourceTree = "<group>"; };
 		496322212AA5D89E00854231 /* UpdateExternalResourceAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateExternalResourceAction.swift; sourceTree = "<group>"; };
@@ -360,6 +279,7 @@
 		49D8276627E9B01700159D93 /* LoginKitWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginKitWrapper.h; sourceTree = "<group>"; };
 		49D8276727E9B01700159D93 /* LoginKitWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginKitWrapper.m; sourceTree = "<group>"; };
 		49FEC6682AD9369C00BAD9F5 /* Command.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Command.swift; sourceTree = "<group>"; };
+		65646162393832622D636161 /* CustomTextLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextLabel.swift; sourceTree = "<group>"; };
 		8A2BBEA627A03ACB0081EBEF /* ProxySetting.sdef */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = ProxySetting.sdef; sourceTree = "<group>"; };
 		8ACD21BA27A04C7800BC4632 /* ProxySettingCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProxySettingCommand.swift; sourceTree = "<group>"; };
 		8ACD21BC27A04ED500BC4632 /* ProxyModeChangeCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProxyModeChangeCommand.swift; sourceTree = "<group>"; };
@@ -418,33 +338,9 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		01BCDAA92C9EC9DD0028FA94 /* Dashboard */ = {
-			isa = PBXGroup;
-			children = (
-				01BCDABD2C9ECD010028FA94 /* Models */,
-				01BCDB1E2C9EE32F0028FA94 /* Extensions */,
-				01BCDAEF2C9ECD010028FA94 /* Views */,
-				01BCDAB92C9ECD010028FA94 /* DashboardViewContoller.swift */,
-				01BCDABF2C9ECD010028FA94 /* ToolbarStore.swift */,
-			);
-			path = Dashboard;
-			sourceTree = "<group>";
-		};
-		01BCDABD2C9ECD010028FA94 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				01BCDABA2C9ECD010028FA94 /* DBConnectionSnapShot.swift */,
-				01BCDABB2C9ECD010028FA94 /* DBProviderStorage.swift */,
-				01BCDABC2C9ECD010028FA94 /* DBProxyStorage.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
 		01BCDAC72C9ECD010028FA94 /* Config */ = {
 			isa = PBXGroup;
 			children = (
-				01BCDAC62C9ECD010028FA94 /* ConfigView.swift */,
-				01BCDAC52C9ECD010028FA94 /* ConfigItemView.swift */,
 			);
 			path = Config;
 			sourceTree = "<group>";
@@ -452,9 +348,6 @@
 		01BCDACB2C9ECD010028FA94 /* Connections */ = {
 			isa = PBXGroup;
 			children = (
-				01BCDACA2C9ECD010028FA94 /* ConnectionsView.swift */,
-				01BCDAC92C9ECD010028FA94 /* ConnectionsTableView.swift */,
-				01BCDAC82C9ECD010028FA94 /* Connections.swift */,
 			);
 			path = Connections;
 			sourceTree = "<group>";
@@ -462,8 +355,6 @@
 		01BCDACE2C9ECD010028FA94 /* Logs */ = {
 			isa = PBXGroup;
 			children = (
-				01BCDACD2C9ECD010028FA94 /* LogsView.swift */,
-				01BCDACC2C9ECD010028FA94 /* LogsTableView.swift */,
 			);
 			path = Logs;
 			sourceTree = "<group>";
@@ -471,9 +362,6 @@
 		01BCDAD22C9ECD010028FA94 /* Overview */ = {
 			isa = PBXGroup;
 			children = (
-				01BCDAD02C9ECD010028FA94 /* OverviewView.swift */,
-				01BCDACF2C9ECD010028FA94 /* OverviewTopItemView.swift */,
-				01BCDAD12C9ECD010028FA94 /* TrafficGraphView.swift */,
 			);
 			path = Overview;
 			sourceTree = "<group>";
@@ -481,13 +369,6 @@
 		01BCDADA2C9ECD010028FA94 /* Providers */ = {
 			isa = PBXGroup;
 			children = (
-				01BCDAD52C9ECD010028FA94 /* ProvidersView.swift */,
-				01BCDAD42C9ECD010028FA94 /* ProviderRowView.swift */,
-				01BCDAD62C9ECD010028FA94 /* ProxyProviderInfoView.swift */,
-				01BCDAD72C9ECD010028FA94 /* ProxyProvidersRowView.swift */,
-				01BCDAD82C9ECD010028FA94 /* RuleProvidersRowView.swift */,
-				01BCDAD92C9ECD010028FA94 /* RuleProviderView.swift */,
-				01BCDB1C2C9EE2CF0028FA94 /* ProgressButton.swift */,
 			);
 			path = Providers;
 			sourceTree = "<group>";
@@ -495,10 +376,6 @@
 		01BCDADF2C9ECD010028FA94 /* Proxies */ = {
 			isa = PBXGroup;
 			children = (
-				01BCDADB2C9ECD010028FA94 /* ProxiesView.swift */,
-				01BCDADC2C9ECD010028FA94 /* ProxyGroupRowView.swift */,
-				01BCDADD2C9ECD010028FA94 /* ProxyGroupView.swift */,
-				01BCDADE2C9ECD010028FA94 /* ProxyNodeView.swift */,
 			);
 			path = Proxies;
 			sourceTree = "<group>";
@@ -506,8 +383,6 @@
 		01BCDAE22C9ECD010028FA94 /* Rules */ = {
 			isa = PBXGroup;
 			children = (
-				01BCDAE12C9ECD010028FA94 /* RulesView.swift */,
-				01BCDAE02C9ECD010028FA94 /* RuleItemView.swift */,
 			);
 			path = Rules;
 			sourceTree = "<group>";
@@ -522,7 +397,6 @@
 				01BCDACB2C9ECD010028FA94 /* Connections */,
 				01BCDAC72C9ECD010028FA94 /* Config */,
 				01BCDACE2C9ECD010028FA94 /* Logs */,
-				01BCDAD32C9ECD010028FA94 /* ProviderProxiesView.swift */,
 			);
 			path = ContentTabs;
 			sourceTree = "<group>";
@@ -530,35 +404,8 @@
 		01BCDAE82C9ECD010028FA94 /* SidebarView */ = {
 			isa = PBXGroup;
 			children = (
-				01BCDAE42C9ECD010028FA94 /* SidebarItem.swift */,
-				01BCDAE52C9ECD010028FA94 /* SidebarLabel.swift */,
-				01BCDAE62C9ECD010028FA94 /* SidebarListView.swift */,
-				01BCDAE72C9ECD010028FA94 /* SidebarView.swift */,
 			);
 			path = SidebarView;
-			sourceTree = "<group>";
-		};
-		01BCDAEF2C9ECD010028FA94 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				01BCDAE32C9ECD010028FA94 /* ContentTabs */,
-				01BCDAE82C9ECD010028FA94 /* SidebarView */,
-				01BCDAEA2C9ECD010028FA94 /* ClashApiDatasStorage.swift */,
-				01BCDAEC2C9ECD010028FA94 /* DashboardView.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		01BCDB1E2C9EE32F0028FA94 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				01BCDAE92C9ECD010028FA94 /* ArrayExtensions.swift */,
-				01BCDAEB2C9ECD010028FA94 /* ColorExtension.swift */,
-				01BCDAEE2C9ECD010028FA94 /* SwiftUIViewExtensions.swift */,
-				01BCDAED2C9ECD010028FA94 /* NSTableViewExtension.swift */,
-				01BCDABE2C9ECD010028FA94 /* NotificationNames.swift */,
-			);
-			path = Extensions;
 			sourceTree = "<group>";
 		};
 		4913C82021157CEB00F6B87C /* Macro */ = {
@@ -800,7 +647,6 @@
 				4931969C21631F2E00A8E6E7 /* Views */,
 				496322202AA5D88100854231 /* Actions */,
 				4989F98520D0AA300001E564 /* ViewControllers */,
-				01BCDAA92C9EC9DD0028FA94 /* Dashboard */,
 				49761DA521C9490400AE13EF /* Resources */,
 				49CF3B3A20CD783A001EBF94 /* Support Files */,
 				49CF3B2020CD7463001EBF94 /* AppDelegate.swift */,
@@ -1068,7 +914,6 @@
 				01F336032AD10D0B0048AF77 /* ProxyGroupMenu.swift in Sources */,
 				01F336042AD10D0B0048AF77 /* MenuItemFactory.swift in Sources */,
 				01F336052AD10D0B0048AF77 /* MetaTask.swift in Sources */,
-				01BCDB1D2C9EE2CF0028FA94 /* ProgressButton.swift in Sources */,
 				01F336072AD10D0B0048AF77 /* RemoteConfigModel.swift in Sources */,
 				01F336082AD10D0B0048AF77 /* ProxyGroupMenuItemView.swift in Sources */,
 				01F336092AD10D0B0048AF77 /* PrivilegedHelperManager.swift in Sources */,
@@ -1078,46 +923,7 @@
 				01F3360E2AD10D0B0048AF77 /* ProxyGroupSpeedTestMenuItem.swift in Sources */,
 				01F3360F2AD10D0B0048AF77 /* LoginServiceKit.swift in Sources */,
 				01F336102AD10D0B0048AF77 /* NormalMenuItemView.swift in Sources */,
-				01BCDAF02C9ECD010028FA94 /* DBProviderStorage.swift in Sources */,
-				01BCDAF12C9ECD010028FA94 /* ProviderRowView.swift in Sources */,
-				01BCDAF22C9ECD010028FA94 /* DashboardViewContoller.swift in Sources */,
-				01BCDAF32C9ECD010028FA94 /* ProxyGroupRowView.swift in Sources */,
-				01BCDAF42C9ECD010028FA94 /* DashboardView.swift in Sources */,
-				01BCDAF52C9ECD010028FA94 /* Connections.swift in Sources */,
-				01BCDAF62C9ECD010028FA94 /* ConfigItemView.swift in Sources */,
-				01BCDAF72C9ECD010028FA94 /* ColorExtension.swift in Sources */,
-				01BCDAF82C9ECD010028FA94 /* OverviewTopItemView.swift in Sources */,
-				01BCDAF92C9ECD010028FA94 /* ConnectionsView.swift in Sources */,
-				01BCDAFA2C9ECD010028FA94 /* TrafficGraphView.swift in Sources */,
-				01BCDAFB2C9ECD010028FA94 /* LogsTableView.swift in Sources */,
-				01BCDAFD2C9ECD010028FA94 /* ToolbarStore.swift in Sources */,
-				01BCDAFE2C9ECD010028FA94 /* RuleItemView.swift in Sources */,
-				01BCDAFF2C9ECD010028FA94 /* ConnectionsTableView.swift in Sources */,
-				01BCDB002C9ECD010028FA94 /* DBConnectionSnapShot.swift in Sources */,
-				01BCDB012C9ECD010028FA94 /* ProxyNodeView.swift in Sources */,
-				01BCDB022C9ECD010028FA94 /* ProxyProviderInfoView.swift in Sources */,
-				01BCDB032C9ECD010028FA94 /* ProvidersView.swift in Sources */,
-				01BCDB042C9ECD010028FA94 /* ClashApiDatasStorage.swift in Sources */,
-				01BCDB052C9ECD010028FA94 /* RulesView.swift in Sources */,
-				01BCDB062C9ECD010028FA94 /* RuleProviderView.swift in Sources */,
 				0114F0CF2E5B60CB007C7AAC /* LogRateLimiter.swift in Sources */,
-				01BCDB072C9ECD010028FA94 /* SidebarItem.swift in Sources */,
-				01BCDB092C9ECD010028FA94 /* DBProxyStorage.swift in Sources */,
-				01BCDB0A2C9ECD010028FA94 /* SwiftUIViewExtensions.swift in Sources */,
-				01BCDB0C2C9ECD010028FA94 /* NSTableViewExtension.swift in Sources */,
-				01BCDB0E2C9ECD010028FA94 /* ArrayExtensions.swift in Sources */,
-				01BCDB0F2C9ECD010028FA94 /* ProxyGroupView.swift in Sources */,
-				01BCDB102C9ECD010028FA94 /* ProxiesView.swift in Sources */,
-				01BCDB112C9ECD010028FA94 /* OverviewView.swift in Sources */,
-				01BCDB122C9ECD010028FA94 /* ProviderProxiesView.swift in Sources */,
-				01BCDB132C9ECD010028FA94 /* ConfigView.swift in Sources */,
-				01BCDB142C9ECD010028FA94 /* ProxyProvidersRowView.swift in Sources */,
-				01BCDB152C9ECD010028FA94 /* NotificationNames.swift in Sources */,
-				01BCDB162C9ECD010028FA94 /* LogsView.swift in Sources */,
-				01BCDB172C9ECD010028FA94 /* SidebarListView.swift in Sources */,
-				01BCDB182C9ECD010028FA94 /* RuleProvidersRowView.swift in Sources */,
-				01BCDB1A2C9ECD010028FA94 /* SidebarView.swift in Sources */,
-				01BCDB1B2C9ECD010028FA94 /* SidebarLabel.swift in Sources */,
 				01F336112AD10D0B0048AF77 /* ProxyItemView.swift in Sources */,
 				01EF33642B98D71600D1DBD9 /* ProxyConfigRemoteProcessProtocol.swift in Sources */,
 				01F336122AD10D0B0048AF77 /* ICloudManager.swift in Sources */,

@@ -87,36 +87,45 @@ class MetaPrefsViewController: NSViewController {
 	}
 	
 	@IBAction func updateAlpha(_ sender: NSButton) {
-		sender.isEnabled = false
-		updateProgressIndicator.isHidden = false
-		updateProgressIndicator.startAnimation(nil)
-		
-		let dl = AlphaMetaDownloader.self
-		
-		Task {
-			do {
-                let assets = try await dl.alphaAssets()
-				let asset = try await dl.alphaCoreAsset(assets)
-				let ver = try dl.checkVersion(asset)
-				let data = try await dl.downloadCore(ver)
-                let checksum = try await dl.checksumString(assets, asset: asset)
-                let newVer = try dl.replaceCore(data, checksum: checksum)
-				
-				await MainActor.run {
-					self.updateAlphaVersion(newVer)
-					let msg = NSLocalizedString("Version: ", comment: "") + newVer
-					UserNotificationCenter.shared.post(title: "Clash Meta Core", info: msg)
+		// Alpha core update disabled in macOS 10.14 compatible build
+		if #available(macOS 10.15, *) {
+			sender.isEnabled = false
+			updateProgressIndicator.isHidden = false
+			updateProgressIndicator.startAnimation(nil)
+
+			let dl = AlphaMetaDownloader.self
+
+			Task {
+				do {
+					let assets = try await dl.alphaAssets()
+					let asset = try await dl.alphaCoreAsset(assets)
+					let ver = try dl.checkVersion(asset)
+					let data = try await dl.downloadCore(ver)
+					let checksum = try await dl.checksumString(assets, asset: asset)
+					let newVer = try dl.replaceCore(data, checksum: checksum)
+
+					await MainActor.run {
+						self.updateAlphaVersion(newVer)
+						let msg = NSLocalizedString("Version: ", comment: "") + newVer
+						UserNotificationCenter.shared.post(title: "Clash Meta Core", info: msg)
+					}
+				} catch {
+					let error = error as? AlphaMetaDownloader.errors
+					UserNotificationCenter.shared.post(title: "Clash Meta Core", info: error?.des() ?? "")
 				}
-			} catch {
-				let error = error as? AlphaMetaDownloader.errors
-				UserNotificationCenter.shared.post(title: "Clash Meta Core", info: error?.des() ?? "")
+
+				await MainActor.run {
+					sender.isEnabled = true
+					self.updateProgressIndicator.isHidden = true
+					self.updateProgressIndicator.stopAnimation(nil)
+				}
 			}
-			
-			await MainActor.run {
-				sender.isEnabled = true
-				self.updateProgressIndicator.isHidden = true
-				self.updateProgressIndicator.stopAnimation(nil)
-			}
+		} else {
+			// macOS 10.14: Show error message
+			UserNotificationCenter.shared.post(
+				title: "Clash Meta Core",
+				info: "Alpha core update requires macOS 10.15 or later"
+			)
 		}
 	}
 	
@@ -157,27 +166,27 @@ class MetaPrefsViewController: NSViewController {
     }
 	
 	func initDashboardButtons() {
-		let useSwiftUI = DashboardManager.shared.useSwiftUI
 		let dashboard = ConfigManager.webDashboard
-		
-        useSwiftuiButton.isEnabled = true
-		useSwiftuiButton.state = useSwiftUI ? .on : .off
-        
-        let buttons = [useYacdButton, useXDButton, useZashButton]
-        
-        buttons.forEach {
-            $0?.state = .off
-            $0?.isEnabled = !useSwiftUI
-        }
-        
-        switch dashboard {
-        case .yacd:
-            useYacdButton.state = .on
-        case .metacubexd:
-            useXDButton.state = .on
-        case .zashboard:
-            useZashButton.state = .on
-        }
+
+		// SwiftUI Dashboard not available in macOS 10.14 compatible build
+		useSwiftuiButton.isEnabled = false
+		useSwiftuiButton.state = .off
+
+		let buttons = [useYacdButton, useXDButton, useZashButton]
+
+		buttons.forEach {
+			$0?.state = .off
+			$0?.isEnabled = true
+		}
+
+		switch dashboard {
+		case .yacd:
+			useYacdButton.state = .on
+		case .metacubexd:
+			useXDButton.state = .on
+		case .zashboard:
+			useZashButton.state = .on
+		}
 	}
 	
 	func setAlphaVersion() {

@@ -19,31 +19,35 @@ class UserNotificationCenter: NSObject {
 	}
 	
 	func post(title: String, info: String, identifier: String? = nil, notiOnly: Bool = true) {
-		Task { @MainActor in
-			do {
-				let notificationCenter = UNUserNotificationCenter.current()
-				let settings = await notificationCenter.notificationSettings()
-				
+		// macOS 10.14 compatible version - use callback-based API
+		let notificationCenter = UNUserNotificationCenter.current()
+
+		notificationCenter.getNotificationSettings { settings in
+			DispatchQueue.main.async {
 				switch settings.authorizationStatus {
 				case .denied:
 					guard !notiOnly else { return }
-					postNotificationAlert(title: title, info: info, identifier: identifier)
+					self.postNotificationAlert(title: title, info: info, identifier: identifier)
 				case .authorized, .provisional:
-					postNotification(title: title, info: info, identifier: identifier)
+					self.postNotification(title: title, info: info, identifier: identifier)
 				case .notDetermined:
-					let granted = try await notificationCenter.requestAuthorization(options: [.alert, .badge, .sound])
-					
-					if granted {
-						postNotification(title: title, info: info, identifier: identifier)
-					} else {
-						guard !notiOnly else { return }
-						postNotificationAlert(title: title, info: info, identifier: identifier)
+					notificationCenter.requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
+						DispatchQueue.main.async {
+							if let error = error {
+								Logger.log("Request notification authorization failed, \(error)", level: .error)
+							}
+
+							if granted {
+								self.postNotification(title: title, info: info, identifier: identifier)
+							} else {
+								guard !notiOnly else { return }
+								self.postNotificationAlert(title: title, info: info, identifier: identifier)
+							}
+						}
 					}
 				@unknown default:
-					postNotification(title: title, info: info, identifier: identifier)
+					self.postNotification(title: title, info: info, identifier: identifier)
 				}
-			} catch {
-				Logger.log("Request notification authorization failed, \(error)", level: .error)
 			}
 		}
 	}
@@ -136,15 +140,17 @@ class UserNotificationCenter: NSObject {
 }
 
 extension UserNotificationCenter: UNUserNotificationCenterDelegate {
-	func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
+	// macOS 10.14 compatible version - non-async delegate methods
+	func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
 		if let identifier = response.notification.request.content.userInfo["identifier"] as? String {
 			handleNotificationActive(with: identifier)
 		}
 		center.removeAllDeliveredNotifications()
+		completionHandler()
 	}
-	
-	func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification) async -> UNNotificationPresentationOptions {
-		[.banner, .sound]
+
+	func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+		completionHandler([.alert, .sound])
 	}
 	
 	func handleNotificationActive(with identifier: String) {

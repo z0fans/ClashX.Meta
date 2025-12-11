@@ -373,25 +373,21 @@ extension ApiRequest {
         req("/connections/\(id)", method: .delete).response { _ in }
     }
 	
-	static func getConnections(completeHandler: @escaping (DBConnectionSnapShot) -> Void) {
-		
+	// Dashboard-specific connections API removed for macOS 10.14 compatibility
+	// Use ClashConnectionBaseSnapShot instead for legacy build
+	static func getConnections(completeHandler: @escaping (ClashConnectionBaseSnapShot) -> Void) {
+
 		let decoder = JSONDecoder()
 		decoder.dateDecodingStrategy = .formatted(DateFormatter.js)
-		
-		req("/connections").responseDecodable(of: DBConnectionSnapShot.self, decoder: decoder) { resp in
+
+		req("/connections").responseDecodable(of: ClashConnectionBaseSnapShot.self, decoder: decoder) { resp in
 			switch resp.result {
 			case let .success(snapshot):
 				completeHandler(snapshot)
 			case .failure:
 				return
-//                assertionFailure()
-//                completeHandler(DBConnectionSnapShot())
 			}
 		}
-	}
-
-	static func closeConnection(_ conn: ClashConnectionSnapShot.Connection) {
-		req("/connections/".appending(conn.id), method: .delete).response { _ in }
 	}
 
 	static func closeAllConnection() {
@@ -780,11 +776,10 @@ extension ApiRequest: WebSocketDelegate {
 			delegate?.didUpdateTraffic(up: json["up"].intValue, down: json["down"].intValue)
 			dashboardDelegate?.didUpdateTraffic(up: json["up"].intValue, down: json["down"].intValue)
 		case loggingWebSocket:
-            Task {
-                guard await logRateLimiter.processLog() else { return }
-                delegate?.didGetLog(log: json["payload"].stringValue, level: json["type"].string ?? "info")
-                dashboardDelegate?.didGetLog(log: json["payload"].stringValue, level: json["type"].string ?? "info")
-            }
+		// macOS 10.14 compatible version - processLog() is synchronous
+		guard logRateLimiter.processLog() else { return }
+		delegate?.didGetLog(log: json["payload"].stringValue, level: json["type"].string ?? "info")
+		dashboardDelegate?.didGetLog(log: json["payload"].stringValue, level: json["type"].string ?? "info")
 		case memoryWebSocket:
 			delegate?.didUpdateMemory(memory: json["inuse"].int64Value)
 			dashboardDelegate?.didUpdateMemory(memory: json["inuse"].int64Value)

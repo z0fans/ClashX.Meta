@@ -13,15 +13,18 @@ import WebKit
 
 enum WebCacheCleaner {
     static func clean() {
-        Task { @MainActor in
-            HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
-            Logger.log("[WebCacheCleaner] All cookies deleted")
-            
-            let types = WKWebsiteDataStore.allWebsiteDataTypes()
-            let records = await WKWebsiteDataStore.default().dataRecords(ofTypes: types)
-            await WKWebsiteDataStore.default().removeData(ofTypes: types, for: records)
-            Logger.log("[WebCacheCleaner] All records deleted")
-        }
+		// macOS 10.14 compatible version - use callback-based API
+		DispatchQueue.main.async {
+			HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
+			Logger.log("[WebCacheCleaner] All cookies deleted")
+
+			let types = WKWebsiteDataStore.allWebsiteDataTypes()
+			WKWebsiteDataStore.default().fetchDataRecords(ofTypes: types) { records in
+				WKWebsiteDataStore.default().removeData(ofTypes: types, for: records) {
+					Logger.log("[WebCacheCleaner] All records deleted")
+				}
+			}
+		}
     }
 }
 

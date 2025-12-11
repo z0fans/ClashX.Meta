@@ -7,7 +7,9 @@
 
 import Cocoa
 import Alamofire
+#if swift(>=5.5) && canImport(CryptoKit)
 import CryptoKit
+#endif
 
 class AlphaMetaDownloader: NSObject {
 
@@ -82,36 +84,41 @@ class AlphaMetaDownloader: NSObject {
 		return identifier
 	}
 
+	// Alpha core update features disabled in macOS 10.14 compatible build
+	// Async/await requires macOS 10.15+
+	@available(macOS 10.15, *)
 	static func alphaAssets() async throws -> [ReleasesResp.Asset] {
 		let resp = try? await AF.request("https://api.github.com/repos/MetaCubeX/mihomo/releases/tags/Prerelease-Alpha").serializingDecodable(ReleasesResp.self).value
-		
+
 		guard let resp else {
 			throw errors.downloadFailed
 		}
-		
+
 		return resp.assets
 	}
-    
+
+	@available(macOS 10.15, *)
     static func alphaCoreAsset(_ assets: [ReleasesResp.Asset]) async throws -> ReleasesResp.Asset {
         guard let assetName = assetName(),
               let asset = assets.first(where: {
                   guard $0.state == "uploaded", $0.contentType == "application/gzip" else { return false }
-                  
+
                   let names = $0.name.split(separator: "-").map(String.init)
                   guard names.count > 4,
                         names[0] == "mihomo",
                         names[1] == "darwin",
                         names[2] == assetName,
                         names[3] == "alpha" else { return false }
-                        
+
                   return true
               }) else {
             throw errors.decodeReleaseInfoFailed
         }
-        
+
         return asset
     }
-    
+
+	@available(macOS 10.15, *)
     static func checksumString(_ assets: [ReleasesResp.Asset], asset: ReleasesResp.Asset) async throws -> String {
         guard let checksumsAsset = assets.first(where: {
             $0.name == "checksums.txt"
@@ -122,7 +129,7 @@ class AlphaMetaDownloader: NSObject {
         else {
             throw errors.downloadChecksumFailed
         }
-        
+
         return String(str)
     }
     
@@ -137,6 +144,7 @@ class AlphaMetaDownloader: NSObject {
 		return asset
 	}
 
+	@available(macOS 10.15, *)
 	static func downloadCore(_ asset: ReleasesResp.Asset) async throws -> Data {
 		let fm = FileManager.default
 		let data = try? await AF.download(asset.downloadUrl).serializingData().value
@@ -150,10 +158,21 @@ class AlphaMetaDownloader: NSObject {
 
     static func replaceCore(_ gzData: Data, checksum: String) throws -> String {
 		let fm = FileManager.default
-        
-        guard SHA256.hash(data: gzData).compactMap({ String(format: "%02x", $0) }).joined() == checksum else {
-            throw errors.checksumFailed
-        }
+
+		// SHA256 requires macOS 10.15+
+		#if swift(>=5.5) && canImport(CryptoKit)
+		if #available(macOS 10.15, *) {
+			guard SHA256.hash(data: gzData).compactMap({ String(format: "%02x", $0) }).joined() == checksum else {
+				throw errors.checksumFailed
+			}
+		} else {
+			// Skip checksum verification on macOS 10.14
+			Logger.log("[AlphaMetaDownloader] Checksum verification skipped (requires macOS 10.15+)")
+		}
+		#else
+		// Skip checksum verification on macOS 10.14
+		Logger.log("[AlphaMetaDownloader] Checksum verification skipped (requires macOS 10.15+)")
+		#endif
 
 		guard let helperURL = Paths.alphaCorePath() else {
 			throw errors.unknownError
