@@ -58,9 +58,14 @@ jobs:
     - name: install create-dmg
       run: brew install create-dmg
 
+    - name: clean build cache
+      run: |
+        rm -rf ~/Library/Developer/Xcode/DerivedData
+        rm -rf .build
+
     - name: build
       run: |
-        xcodebuild archive -project ClashX.xcodeproj -scheme ClashX\ Meta -archivePath archive/ClashX.xcarchive -showBuildTimingSummary -allowProvisioningUpdates
+        xcodebuild clean archive -project ClashX.xcodeproj -scheme ClashX\ Meta -archivePath archive/ClashX.xcarchive -showBuildTimingSummary -allowProvisioningUpdates
 
     - name: create dmg
       run: bash create_dmg.sh
