@@ -283,34 +283,51 @@ class ClashProcess: NSObject {
 	func startMeta(_ config: ClashMetaConfig.Config) -> Promise<MetaServer> {
 		.init { resolver in
 			guard let path = launchPath.path else {
+				Logger.log("[START] ERROR: launchPath is nil", level: .error)
 				resolver.reject(StartMetaError.launchPathMissing)
 				return
 			}
-        
-            
+
+			Logger.log("[START] Core path: \(path)")
+			Logger.log("[START] Config path: \(config.path)")
+			Logger.log("[START] Conf folder: \(kConfigFolderPath)")
+
             let confJSON = MetaServer(
                 externalController: config.externalController,
                 secret: config.secret ?? "",
                 safePaths: config.safePaths ?? ""
             ).jsonString()
-			
+
+			Logger.log("[START] Calling PrivilegedHelper.startMeta...")
 			PrivilegedHelperManager.shared.helper {
-				Logger.log("helperNotFound, startMeta failed", level: .error)
+				Logger.log("[START] ERROR: PrivilegedHelper not found", level: .error)
 				resolver.reject(StartMetaError.helperNotFound)
 			}?.startMeta(path: path,
 						 confPath: kConfigFolderPath,
 						 confFilePath: config.path,
-						 confJSON: confJSON) {
-				if let string = $0 {
+						 confJSON: confJSON) { response in
+				Logger.log("[START] PrivilegedHelper response received")
+				if let string = response {
+					Logger.log("[START] Response string: '\(string)'")
+					if string.isEmpty {
+						Logger.log("[START] ERROR: Response is empty string", level: .error)
+						Logger.log("[START] This usually means the core binary failed to execute", level: .error)
+						Logger.log("[START] Check if macOS Gatekeeper is blocking the executable", level: .error)
+						resolver.reject(StartMetaError.startMetaFailed("Core execution failed - response empty"))
+						return
+					}
 					guard let jsonData = string.data(using: .utf8),
 						  let res = try? JSONDecoder().decode(MetaServer.self, from: jsonData) else {
+						Logger.log("[START] ERROR: Failed to decode JSON response: \(string)", level: .error)
 						resolver.reject(StartMetaError.startMetaFailed(string))
 						return
 					}
 
+					Logger.log("[START] SUCCESS: Core started successfully")
 					resolver.fulfill(res)
 				} else {
-					resolver.reject(StartMetaError.startMetaFailed($0 ?? "unknown error"))
+					Logger.log("[START] ERROR: Response is nil", level: .error)
+					resolver.reject(StartMetaError.startMetaFailed("Response is nil"))
 				}
 			}
 		}
@@ -347,6 +364,7 @@ class ClashProcess: NSObject {
 			  let gzPath = Paths.defaultCoreGzPath() else { return "Paths error" }
 		let fm = FileManager.default
 		do {
+			Logger.log("[UNZIP] Extracting core from: \(gzPath)")
 			let data = try Data(contentsOf: .init(fileURLWithPath: gzPath)).gunzipped()
 
 			if !fm.fileExists(atPath: corePath.deletingLastPathComponent().path) {
@@ -354,6 +372,11 @@ class ClashProcess: NSObject {
 			}
 
 			try data.write(to: corePath)
+			Logger.log("[UNZIP] Core extracted to: \(corePath.path)")
+
+			// Remove quarantine attribute to bypass Gatekeeper on macOS 10.14
+			removeQuarantine(corePath.path)
+
 			return nil
 		} catch let error {
 			let msg = "Unzip Meta failed: \(error)"
@@ -362,30 +385,61 @@ class ClashProcess: NSObject {
 		}
 	}
 
+	private func removeQuarantine(_ path: String) {
+		Logger.log("[QUARANTINE] Removing quarantine attribute from: \(path)")
+		let proc = Process()
+		proc.executableURL = .init(fileURLWithPath: "/usr/bin/xattr")
+		proc.arguments = ["-d", "com.apple.quarantine", path]
+		do {
+			try proc.run()
+			proc.waitUntilExit()
+			if proc.terminationStatus == 0 {
+				Logger.log("[QUARANTINE] Successfully removed quarantine attribute")
+			} else {
+				Logger.log("[QUARANTINE] xattr exited with status \(proc.terminationStatus) (attribute may not exist)", level: .warning)
+			}
+		} catch {
+			Logger.log("[QUARANTINE] Failed to run xattr: \(error.localizedDescription)", level: .warning)
+		}
+	}
+
 	func verifyCoreFile(_ path: String) -> (version: String, date: Date?)? {
-		guard chmodX(path) else { return nil }
+		Logger.log("[VERIFY] Verifying core file: \(path)")
+		guard chmodX(path) else {
+			Logger.log("[VERIFY] ERROR: chmod +x failed", level: .error)
+			return nil
+		}
 
 		let proc = Process()
 		proc.executableURL = .init(fileURLWithPath: path)
 		proc.arguments = ["-v"]
 		let pipe = Pipe()
+		let errorPipe = Pipe()
 		proc.standardOutput = pipe
+		proc.standardError = errorPipe
 		do {
 			try proc.run()
 		} catch let error {
-			Logger.log(error.localizedDescription)
+			Logger.log("[VERIFY] ERROR: Failed to execute core: \(error.localizedDescription)", level: .error)
+			Logger.log("[VERIFY] ERROR: This is likely due to macOS Gatekeeper blocking unsigned/unnotarized executable", level: .error)
 			return nil
 		}
 		proc.waitUntilExit()
 		let data = pipe.fileHandleForReading.readDataToEndOfFile()
+		let errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
+
+		if let errorOut = String(data: errorData, encoding: .utf8), !errorOut.isEmpty {
+			Logger.log("[VERIFY] stderr: \(errorOut)", level: .warning)
+		}
 
 		guard proc.terminationStatus == 0,
 			  let out = String(data: data, encoding: .utf8) else {
+			Logger.log("[VERIFY] ERROR: Core exited with status \(proc.terminationStatus)", level: .error)
 			return nil
 		}
 
-		Logger.log("verify core path: \(path)")
-		Logger.log("-v out: \(out)")
+		Logger.log("[VERIFY] Core executed successfully")
+		Logger.log("[VERIFY] Output: \(out)")
 		
 		let outs = out
 			.split(separator: "\n")
