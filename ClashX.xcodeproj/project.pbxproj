@@ -15,7 +15,6 @@
 		019A239628657A7A00AE5698 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019A239528657A7A00AE5698 /* main.swift */; };
 		01BC9ABE2928EB5A00F9B177 /* MetaDNS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BC9ABD2928E5C600F9B177 /* MetaDNS.swift */; };
 		01BCDAAC2C9ECB3A0028FA94 /* DSFSparkline in Frameworks */ = {isa = PBXBuildFile; productRef = 01BCDAAB2C9ECB3A0028FA94 /* DSFSparkline */; };
-		01BCDB212C9EEE260028FA94 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 01BCDB202C9EEE260028FA94 /* Sparkle */; };
 		01CA6BC12B6A1B3100E386D6 /* MetaServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CA6BBF2B6A1B3100E386D6 /* MetaServer.swift */; };
 		01CA6BC22B6A1B3100E386D6 /* MetaServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CA6BBF2B6A1B3100E386D6 /* MetaServer.swift */; };
 		01D567E42AD158B600CDA0AE /* MetaPrefs.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01D567E12AD158B500CDA0AE /* MetaPrefs.storyboard */; };
@@ -318,7 +317,6 @@
 				01F336282AD10D0B0048AF77 /* Starscream in Frameworks */,
 				01F336292AD10D0B0048AF77 /* PromiseKit in Frameworks */,
 				01BCDAAC2C9ECB3A0028FA94 /* DSFSparkline in Frameworks */,
-				01BCDB212C9EEE260028FA94 /* Sparkle in Frameworks */,
 				01F3362B2AD10D0B0048AF77 /* Alamofire in Frameworks */,
 				01F3362C2AD10D0B0048AF77 /* CocoaLumberjack in Frameworks */,
 				01F3362D2AD10D0B0048AF77 /* Yams in Frameworks */,
@@ -747,7 +745,6 @@
 				01F335C82AD10D0B0048AF77 /* Yams */,
 				01F335CA2AD10D0B0048AF77 /* PromiseKit */,
 				01BCDAAB2C9ECB3A0028FA94 /* DSFSparkline */,
-				01BCDB202C9EEE260028FA94 /* Sparkle */,
 			);
 			productName = ClashX;
 			productReference = 01F336442AD10D0B0048AF77 /* ClashX Meta.app */;
@@ -809,7 +806,6 @@
 				015B97812A4F311300F9FA4D /* XCRemoteSwiftPackageReference "Yams" */,
 				015B97842A4F31AE00F9FA4D /* XCRemoteSwiftPackageReference "PromiseKit" */,
 				01BCDAAA2C9ECB3A0028FA94 /* XCRemoteSwiftPackageReference "DSFSparkline" */,
-				01BCDB1F2C9EEE260028FA94 /* XCRemoteSwiftPackageReference "Sparkle" */,
 			);
 			productRefGroup = 49CF3B1E20CD7463001EBF94 /* Products */;
 			projectDirPath = "";
@@ -1406,14 +1402,6 @@
 				minimumVersion = 6.0.2;
 			};
 		};
-		01BCDB1F2C9EEE260028FA94 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/sparkle-project/Sparkle";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.6.4;
-			};
-		};
 		01F335B92AD10D0B0048AF77 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire";
@@ -1493,11 +1481,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 01BCDAAA2C9ECB3A0028FA94 /* XCRemoteSwiftPackageReference "DSFSparkline" */;
 			productName = DSFSparkline;
-		};
-		01BCDB202C9EEE260028FA94 /* Sparkle */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 01BCDB1F2C9EEE260028FA94 /* XCRemoteSwiftPackageReference "Sparkle" */;
-			productName = Sparkle;
 		};
 		01F335B82AD10D0B0048AF77 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;

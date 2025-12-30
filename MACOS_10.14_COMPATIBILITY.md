@@ -2,23 +2,27 @@
 
 > **版本**: v1.4.33-legacy
 > **分支**: compat-10.14
-> **日期**: 2024-12-11
-> **目标**: 为 macOS 10.14.6+ 用户提供完整的 ClashX Meta 功能支持
+> **最后更新**: 2025-12-30
+> **目标**: 为 macOS 10.14+ 用户提供完整的 ClashX Meta 功能支持
 
 ---
 
 ## 📋 概述
 
-本文档详细记录了为 macOS 10.14.6+ 系统创建兼容版本的所有修改。主要解决了 Swift 5.5+ 引入的现代并发 API（async/await、actor、Task、MainActor）在 macOS 10.14 上不可用的问题。
+本文档详细记录了为 macOS 10.14+ 系统创建兼容版本的所有修改。主要解决了以下兼容性问题:
+
+1. **Swift 并发 API** - async/await、actor、Task、MainActor 在 macOS 10.14 上不可用
+2. **SwiftUI** - 需要 macOS 10.15+,已完全删除
+3. **Sparkle 自动更新** - Sparkle 2.3+ 需要 macOS 10.13+,**已完全移除** ✅
 
 ---
 
 ## 🎯 核心目标
 
-1. **完全兼容 macOS 10.14.6+** - 移除所有 macOS 10.15+ 专有 API
+1. **完全兼容 macOS 10.14+** - 移除所有 macOS 10.15+ 专有 API 和依赖
 2. **保持核心功能完整** - TUN 模式、系统代理、规则管理、配置管理
 3. **提供 Web Dashboard** - yacd/metacubexd/zashboard 三种选择
-4. **禁用自动更新** - 避免用户被推送不兼容的更新
+4. **移除 Sparkle 依赖** - 完全移除自动更新框架,避免 macOS 10.13 以下系统崩溃
 
 ---
 
@@ -58,14 +62,24 @@ ClashX/Dashboard/
     └── DashboardView.swift
 ```
 
-### 3. 项目配置文件 (2 个文件)
+### 3. Sparkle 依赖移除 (4 个文件) ✅ **2025-12-30 新增**
 
 | 文件 | 修改内容 |
 |------|----------|
-| `ClashX.xcodeproj/project.pbxproj` | 使用 xcodeproj gem 移除 40 个文件引用 |
-| `ClashX/Info.plist` | 注释掉 `SUFeedURL` 和 `SUPublicEDKey`，禁用自动更新 |
+| `Package.resolved` | 删除 Sparkle 2.7.1 依赖项 |
+| `ClashX.xcodeproj/project.pbxproj` | 删除 Sparkle Package 引用和 Framework 链接 |
+| `ClashX/Base.lproj/Main.storyboard` | 删除 `SPUStandardUpdaterController` 对象 |
+| `ClashX/Info.plist` | 已注释 `SUFeedURL` 和 `SUPublicEDKey` |
 
-### 4. CI/CD 配置 (1 个文件)
+**移除原因**: Sparkle 2.3+ 需要 macOS 10.13+,在 macOS 10.12 及以下会导致应用崩溃。
+
+### 4. 项目配置文件 (1 个文件)
+
+| 文件 | 修改内容 |
+|------|----------|
+| `ClashX.xcodeproj/project.pbxproj` | 使用 xcodeproj gem 移除 40 个 SwiftUI 文件引用 |
+
+### 5. CI/CD 配置 (1 个文件)
 
 | 文件 | 修改内容 |
 |------|----------|
@@ -376,9 +390,9 @@ class DashboardManager: NSObject {
 | **高级功能** |
 | 全局快捷键 | ✅ | ❌ | 已禁用 |
 | Alpha 核心自动更新 | ✅ | ⚠️ | 需要 macOS 10.15+ |
-| Sparkle 自动更新 | ✅ | ❌ | 已禁用 |
+| Sparkle 自动更新 | ✅ | ❌ | 已完全移除 (Sparkle 2.3+ 需要 macOS 10.13+) |
 | **系统要求** |
-| 最低 macOS 版本 | 12.4 | 10.14.6 | |
+| 最低 macOS 版本 | 12.4 | 10.14+ | 支持 macOS 10.14 及更高版本 |
 | 支持架构 | arm64 + x86_64 | arm64 + x86_64 | Universal Binary |
 
 ### 功能完整性
@@ -500,9 +514,18 @@ GitHub Actions 会自动构建 Universal Binary (arm64 + x86_64):
 
 ---
 
-### 4. 无自动更新功能
+### 4. 无自动更新功能 ✅ **已完全移除 Sparkle (2025-12-30)**
 
-**原因**: 主动禁用 Sparkle，避免推送不兼容更新
+**原因**:
+- Sparkle 2.3+ 需要 macOS 10.13+
+- 在 macOS 10.12 及以下会导致应用启动时崩溃
+- 为确保完整的 macOS 10.14+ 兼容性,已**完全移除** Sparkle 框架
+
+**修改内容**:
+- ✅ 删除 Package.resolved 中的 Sparkle 2.7.1 依赖
+- ✅ 删除 project.pbxproj 中的所有 Sparkle 引用
+- ✅ 删除 Main.storyboard 中的 SPUStandardUpdaterController
+- ✅ Info.plist 中的自动更新配置已注释
 
 **影响**: 需要手动检查和下载新版本
 

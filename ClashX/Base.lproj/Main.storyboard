@@ -1027,7 +1027,6 @@
                     </items>
                 </menu>
                 <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
-                <customObject id="fth-rt-saN" customClass="SPUStandardUpdaterController"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <userDefaultsController representsSharedInstance="YES" id="dwS-am-r7H"/>
             </objects>
