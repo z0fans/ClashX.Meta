@@ -62,29 +62,42 @@ class ClashProcess: NSObject {
 		}
 		
 		let fm = FileManager.default
-		
+		Logger.log("[CORE] Checking core at: \(corePath.path)")
+
 		// unzip internal core
 		if !fm.fileExists(atPath: corePath.path) {
+			Logger.log("[CORE] Core file does not exist, unzipping...")
 			if let msg = unzipMetaCore() {
+				Logger.log("[CORE] Unzip failed: \(msg)")
 				return (nil, msg)
 			}
+			Logger.log("[CORE] Unzip succeeded")
 		} else if !validateDefaultCore(md5) {
+			Logger.log("[CORE] Core exists but MD5 validation failed, re-extracting...")
 			try? fm.removeItem(at: corePath)
 			if let msg = unzipMetaCore() {
+				Logger.log("[CORE] Re-extraction failed: \(msg)")
 				return (nil, msg)
 			}
+			Logger.log("[CORE] Re-extraction succeeded")
+		} else {
+			Logger.log("[CORE] Core file exists and MD5 is valid")
 		}
-		
+
 		if let msg = verifyCoreFile(corePath.path) {
-			Logger.log("version: \(msg.version)")
+			Logger.log("[CORE] Core version: \(msg.version)")
+		} else {
+			Logger.log("[CORE] WARNING: verifyCoreFile() returned nil")
 		}
-		
+
 		// validate md5
+		Logger.log("[CORE] Final MD5 validation...")
 		if validateDefaultCore(md5) {
+			Logger.log("[CORE] SUCCESS: Core validation passed")
 			return (corePath.path, nil)
 		} else {
-			Logger.log("Failure to verify the internal Meta Core.")
-			Logger.log(corePath.path)
+			Logger.log("[CORE] FAILURE: Final MD5 validation failed")
+			Logger.log("[CORE] Path: \(corePath.path)")
 			return (nil, "Failure to verify the internal Meta Core.\nDo NOT replace core file in the resources folder.")
 		}
 	}()
@@ -401,10 +414,21 @@ class ClashProcess: NSObject {
 	}
 
 	private func validateDefaultCore(_ md5: String) -> Bool {
-		guard let path = Paths.defaultCorePath()?.path,
-			  chmodX(path) else { return false }
+		Logger.log("[MD5] Starting core validation")
+		guard let path = Paths.defaultCorePath()?.path else {
+			Logger.log("[MD5] ERROR: defaultCorePath() returned nil")
+			return false
+		}
+		Logger.log("[MD5] Core path: \(path)")
+
+		guard chmodX(path) else {
+			Logger.log("[MD5] ERROR: chmod +x failed on \(path)")
+			return false
+		}
+		Logger.log("[MD5] chmod +x succeeded")
 
 		#if DEBUG
+			Logger.log("[MD5] DEBUG build - skipping MD5 check")
 			return true
 		#endif
 		let proc = Process()
@@ -418,10 +442,16 @@ class ClashProcess: NSObject {
 		let data = pipe.fileHandleForReading.readDataToEndOfFile()
 		guard proc.terminationStatus == 0,
 			  let out = String(data: data, encoding: .utf8) else {
+			Logger.log("[MD5] ERROR: md5 command failed with status \(proc.terminationStatus)")
 			return false
 		}
 
-		return md5 == out.replacingOccurrences(of: "\n", with: "")
+		let actualMD5 = out.replacingOccurrences(of: "\n", with: "")
+		Logger.log("[MD5] Expected: \(md5)")
+		Logger.log("[MD5] Actual:   \(actualMD5)")
+		let result = md5 == actualMD5
+		Logger.log("[MD5] Validation result: \(result ? "SUCCESS" : "FAILED")")
+		return result
 	}
 
 	private func chmodX(_ path: String) -> Bool {
