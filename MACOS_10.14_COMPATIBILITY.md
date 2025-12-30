@@ -73,7 +73,22 @@ ClashX/Dashboard/
 
 **移除原因**: Sparkle 2.3+ 需要 macOS 10.13+,在 macOS 10.12 及以下会导致应用崩溃。
 
-### 4. 项目配置文件 (1 个文件)
+### 4. 构建配置修复 (1 个文件) ✅ **2025-12-30 新增**
+
+| 文件 | 修改内容 |
+|------|----------|
+| `ClashX.xcodeproj/project.pbxproj` | ProxyConfigHelper Debug/Release 配置的 MACOSX_DEPLOYMENT_TARGET 从 `$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)` 改为硬编码 `10.14` |
+
+**修复原因**:
+- 对比可运行于 macOS 10.14 的 ClashX-1.120.0 发现,其所有目标都使用硬编码的 `MACOSX_DEPLOYMENT_TARGET = 10.14`
+- 当前项目的 ProxyConfigHelper 使用了变量 `$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)`,可能导致 Xcode 自动使用更高的部署目标
+- 统一所有目标使用 `10.14` 确保完全兼容 macOS 10.14
+
+**影响的配置节**:
+- ProxyConfigHelper (Debug) - line 1226
+- ProxyConfigHelper (Release) - line 1270
+
+### 5. 项目配置文件 (1 个文件)
 
 | 文件 | 修改内容 |
 |------|----------|
