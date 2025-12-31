@@ -21,20 +21,45 @@ class MetaTask: NSObject {
 					 confFilePath: String,
 					 confJSON: String,
 					 result: @escaping (String?) -> Void) {
-        
+
+        NSLog("[HELPER] Start called with path: \(path)")
+        NSLog("[HELPER] confPath: \(confPath)")
+        NSLog("[HELPER] confFilePath: \(confFilePath)")
+
         var resultReturned = false
-        
+
         func returnResult(_ re: String) {
             guard !resultReturned else { return }
+            NSLog("[HELPER] Returning result: \(re.isEmpty ? "<EMPTY STRING>" : re)")
             timer?.cancel()
             timer = nil
             resultReturned = true
 			result(re)
         }
-		
+
+        NSLog("[HELPER] Setting up Process...")
+
+        // Remove quarantine attribute to bypass Gatekeeper on macOS 10.14
+        NSLog("[HELPER] Removing quarantine attribute from: \(path)")
+        let xattrProc = Process()
+        xattrProc.executableURL = URL(fileURLWithPath: "/usr/bin/xattr")
+        xattrProc.arguments = ["-d", "com.apple.quarantine", path]
+        try? xattrProc.run()
+        xattrProc.waitUntilExit()
+        NSLog("[HELPER] xattr exit status: \(xattrProc.terminationStatus)")
+
+        // Ensure executable permission
+        NSLog("[HELPER] Setting executable permission...")
+        let chmodProc = Process()
+        chmodProc.executableURL = URL(fileURLWithPath: "/bin/chmod")
+        chmodProc.arguments = ["+x", path]
+        try? chmodProc.run()
+        chmodProc.waitUntilExit()
+        NSLog("[HELPER] chmod exit status: \(chmodProc.terminationStatus)")
+
 		proc.executableURL = .init(fileURLWithPath: path)
         proc.currentDirectoryURL = .init(fileURLWithPath: confPath)
-        
+
         var args = [
             "-d",
             confPath
@@ -188,10 +213,20 @@ class MetaTask: NSObject {
 				returnResult(serverResult.jsonString())
 			}
 			
-			try self.proc.run()
-			self.timer?.resume()
-		} catch let error {
-			returnResult("Start meta error, \(error.localizedDescription).")
+			NSLog("[HELPER] About to run process...")
+			NSLog("[HELPER] Executable: \(self.proc.executableURL?.path ?? "nil")")
+			NSLog("[HELPER] Arguments: \(self.proc.arguments ?? [])")
+
+			do {
+				try self.proc.run()
+				NSLog("[HELPER] Process started successfully, PID: \(self.proc.processIdentifier)")
+				self.timer?.resume()
+			} catch let error {
+				NSLog("[HELPER] ERROR: Failed to start process: \(error.localizedDescription)")
+				NSLog("[HELPER] ERROR: Error domain: \((error as NSError).domain)")
+				NSLog("[HELPER] ERROR: Error code: \((error as NSError).code)")
+				returnResult("Start meta error, \(error.localizedDescription).")
+			}
 		}
 	
     }
