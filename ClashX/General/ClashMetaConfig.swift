@@ -11,8 +11,9 @@ class ClashMetaConfig: NSObject {
 
     struct Config: Codable {
         var externalUI: String? = {
-			var subpath = "dashboard/"
-            
+            // 首先尝试在特定子目录中查找 Dashboard
+            var subpath = "dashboard/"
+
             switch ConfigManager.webDashboard {
             case .yacd:
                 subpath += "yacd"
@@ -21,11 +22,18 @@ class ClashMetaConfig: NSObject {
             case .zashboard:
                 subpath += "zashboard"
             }
-            
-            guard let htmlPath = Bundle.main.path(forResource: "index", ofType: "html", inDirectory: subpath) else {
-                return nil
+
+            // 尝试在子目录中查找
+            if let htmlPath = Bundle.main.path(forResource: "index", ofType: "html", inDirectory: subpath) {
+                return URL(fileURLWithPath: htmlPath).deletingLastPathComponent().path
             }
-            return URL(fileURLWithPath: htmlPath).deletingLastPathComponent().path
+
+            // 回退：在 dashboard 根目录中查找
+            if let htmlPath = Bundle.main.path(forResource: "index", ofType: "html", inDirectory: "dashboard") {
+                return URL(fileURLWithPath: htmlPath).deletingLastPathComponent().path
+            }
+
+            return nil
         }()
 
         var externalController = "127.0.0.1:9090"
