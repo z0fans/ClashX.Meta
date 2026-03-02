@@ -17,6 +17,7 @@ class PrivilegedHelperManager {
 	
     private var cancelInstallCheck = false
     private var checkingInstall = false
+    private var useLegacyInstall = false
 
     private var authRef: AuthorizationRef?
     private var connection: NSXPCConnection?
@@ -238,30 +239,25 @@ extension PrivilegedHelperManager {
             return
         }
 
+        if useLegacyInstall {
+            useLegacyInstall = false
+            legacyInstallHelper()
+            if !cancelInstallCheck {
+                checkInstall()
+            }
+            return
+        }
+
         let result = installHelperDaemon()
         if case .success = result {
-            verifyInstallAfterAttempt()
             return
         }
 
         result.alertAction()
+        useLegacyInstall = result.shouldRetryLegacyWay()
         NSAlert.alert(with: result.alertContent)
-        cancelInstallCheck = true
-        isHelperCheckFinished.accept(true)
-    }
-
-    private func verifyInstallAfterAttempt() {
-        getHelperStatus { [weak self] status in
-            guard let self = self else { return }
-            switch status {
-            case .installed:
-                self.cancelInstallCheck = false
-                self.isHelperCheckFinished.accept(true)
-            case .noFound, .needUpdate:
-                Logger.log("helper still unavailable after install attempt", level: .error)
-                self.cancelInstallCheck = true
-                self.isHelperCheckFinished.accept(true)
-            }
+        if !cancelInstallCheck {
+            checkInstall()
         }
     }
 
@@ -275,7 +271,11 @@ extension PrivilegedHelperManager {
         let alert = NSAlert()
         alert.messageText = NSLocalizedString("ClashX needs to install/update a helper tool with administrator privileges, otherwise ClashX won't be able to configure system proxy.", comment: "")
         alert.alertStyle = .warning
-        alert.addButton(withTitle: NSLocalizedString("Install", comment: ""))
+        if useLegacyInstall {
+            alert.addButton(withTitle: NSLocalizedString("Legacy Install", comment: ""))
+        } else {
+            alert.addButton(withTitle: NSLocalizedString("Install", comment: ""))
+        }
         alert.addButton(withTitle: NSLocalizedString("Quit", comment: ""))
         alert.addButton(withTitle: NSLocalizedString("Cancel", comment: ""))
         switch alert.runModal() {
