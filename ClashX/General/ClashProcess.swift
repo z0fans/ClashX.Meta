@@ -113,6 +113,12 @@ class ClashProcess: NSObject {
 
 			switch error {
 			case StartMetaError.helperNotFound:
+				let shouldRetry = PrivilegedHelperManager.shared.shouldRetryHelperStart
+				if !shouldRetry || self.retryTimes >= 40 {
+					self._coreState = .startFailed
+					self.delegate?.clashStartError(error)
+					return
+				}
 				self._coreState = .checkingHelper
 				let delay: DispatchTimeInterval = {
 					switch self.retryTimes {

@@ -159,7 +159,7 @@ class ClashMetaConfig: NSObject {
         }
     }
 
-    static func updateConfigTun(_ config: Data, enable: Bool) -> String? {
+    static func updateConfigTunContent(_ config: Data, enable: Bool) -> String? {
         guard let s = String(data: config, encoding: .utf8),
               var yaml = try? Yams.compose(yaml: s) else {
             return nil
@@ -179,7 +179,11 @@ class ClashMetaConfig: NSObject {
             ]
         }
 
-        guard let ss = try? Yams.serialize(node: yaml),
+        return try? Yams.serialize(node: yaml)
+    }
+
+    static func updateConfigTun(_ config: Data, enable: Bool) -> String? {
+        guard let ss = updateConfigTunContent(config, enable: enable),
               let path = RemoteConfigManager.createCacheConfig(string: ss) else {
             return nil
         }

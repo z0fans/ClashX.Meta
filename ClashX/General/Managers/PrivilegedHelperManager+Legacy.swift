@@ -9,52 +9,6 @@
 import Cocoa
 
 extension PrivilegedHelperManager {
-    func getInstallScript() -> String {
-        let appPath = Bundle.main.bundlePath
-        let bash = """
-        #!/bin/bash
-        set -e
-
-        plistPath=/Library/LaunchDaemons/\(PrivilegedHelperManager.machServiceName).plist
-        rm -rf /Library/PrivilegedHelperTools/\(PrivilegedHelperManager.machServiceName)
-        if [ -e ${plistPath} ]; then
-        launchctl unload -w ${plistPath}
-        rm ${plistPath}
-        fi
-        launchctl remove \(PrivilegedHelperManager.machServiceName) || true
-
-        mkdir -p /Library/PrivilegedHelperTools/
-        rm -f /Library/PrivilegedHelperTools/\(PrivilegedHelperManager.machServiceName)
-
-        cp "\(appPath)/Contents/Library/LaunchServices/\(PrivilegedHelperManager.machServiceName)" "/Library/PrivilegedHelperTools/\(PrivilegedHelperManager.machServiceName)"
-
-        echo '
-        <?xml version="1.0" encoding="UTF-8"?>
-        <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-        <plist version="1.0">
-        <dict>
-        <key>Label</key>
-        <string>\(PrivilegedHelperManager.machServiceName)</string>
-        <key>MachServices</key>
-        <dict>
-        <key>\(PrivilegedHelperManager.machServiceName)</key>
-        <true/>
-        </dict>
-        <key>Program</key>
-        <string>/Library/PrivilegedHelperTools/\(PrivilegedHelperManager.machServiceName)</string>
-        <key>ProgramArguments</key>
-        <array>
-        <string>/Library/PrivilegedHelperTools/\(PrivilegedHelperManager.machServiceName)</string>
-        </array>
-        </dict>
-        </plist>
-        ' > ${plistPath}
-
-        launchctl load -w ${plistPath}
-        """
-        return bash
-    }
-
     func runScriptWithRootPermission(script: String) {
         let tmpPath = FileManager.default.temporaryDirectory.appendingPathComponent(NSUUID().uuidString).appendingPathExtension("sh")
         do {
@@ -73,25 +27,32 @@ extension PrivilegedHelperManager {
         try? FileManager.default.removeItem(at: tmpPath)
     }
 
-    func legacyInstallHelper() {
-        defer {
-            resetConnection()
-            Thread.sleep(forTimeInterval: 1)
-        }
-        let script = getInstallScript()
-        runScriptWithRootPermission(script: script)
-    }
-
     func removeInstallHelper() {
+        cancelInstallCheck = true
+        isHelperCheckFinished.accept(true)
         defer {
             resetConnection()
             Thread.sleep(forTimeInterval: 5)
         }
         let script = """
-        /bin/launchctl remove \(PrivilegedHelperManager.machServiceName) || true
-        /usr/bin/killall -u root -9 \(PrivilegedHelperManager.machServiceName)
-        /bin/rm -rf /Library/LaunchDaemons/\(PrivilegedHelperManager.machServiceName).plist
-        /bin/rm -rf /Library/PrivilegedHelperTools/\(PrivilegedHelperManager.machServiceName)
+        set -e
+        newLabel=\(PrivilegedHelperManager.machServiceName)
+        oldLabel=\(PrivilegedHelperManager.legacyMachServiceName)
+
+        /bin/launchctl bootout system/${newLabel} 2>/dev/null || true
+        /bin/launchctl bootout system/${oldLabel} 2>/dev/null || true
+        /bin/launchctl disable system/${newLabel} 2>/dev/null || true
+        /bin/launchctl disable system/${oldLabel} 2>/dev/null || true
+        /bin/launchctl remove ${newLabel} 2>/dev/null || true
+        /bin/launchctl remove ${oldLabel} 2>/dev/null || true
+
+        /usr/bin/killall -u root -9 ${newLabel} 2>/dev/null || true
+        /usr/bin/killall -u root -9 ${oldLabel} 2>/dev/null || true
+
+        /bin/rm -rf /Library/LaunchDaemons/${newLabel}.plist
+        /bin/rm -rf /Library/LaunchDaemons/${oldLabel}.plist
+        /bin/rm -rf /Library/PrivilegedHelperTools/${newLabel}
+        /bin/rm -rf /Library/PrivilegedHelperTools/${oldLabel}
         """
 
         runScriptWithRootPermission(script: script)

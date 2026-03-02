@@ -94,6 +94,22 @@ class ConfigManager {
 		}
 	}
 
+	var manualTunEnableOverride: Bool? {
+		get {
+			guard UserDefaults.standard.object(forKey: "manualTunEnableOverride") != nil else {
+				return nil
+			}
+			return UserDefaults.standard.bool(forKey: "manualTunEnableOverride")
+		}
+		set {
+			if let newValue {
+				UserDefaults.standard.set(newValue, forKey: "manualTunEnableOverride")
+			} else {
+				UserDefaults.standard.removeObject(forKey: "manualTunEnableOverride")
+			}
+		}
+	}
+
     let proxyPortAutoSetObservable = UserDefaults.standard.rx.observe(Bool.self, "proxyPortAutoSet").map { $0 ?? false }
 
     var isProxySetByOtherVariable = BehaviorRelay<Bool>(value: false)

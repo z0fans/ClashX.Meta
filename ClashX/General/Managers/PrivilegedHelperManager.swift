@@ -16,55 +16,43 @@ class PrivilegedHelperManager {
 	
 	
     private var cancelInstallCheck = false
-
-    private let useLegacyInstall = true
+    private var checkingInstall = false
 
     private var authRef: AuthorizationRef?
     private var connection: NSXPCConnection?
     private var _helper: ProxyConfigRemoteProcessProtocol?
     static let machServiceName = "com.metacubex.ClashX.ProxyConfigHelper"
+    static let legacyMachServiceName = "com.west2online.ClashX.ProxyConfigHelper"
 
     static let shared = PrivilegedHelperManager()
     init() {
         initAuthorizationRef()
     }
 
+    var shouldRetryHelperStart: Bool {
+        !cancelInstallCheck
+    }
+
     // MARK: - Public
 
     func checkInstall() {
+        if checkingInstall { return }
+        if cancelInstallCheck {
+            isHelperCheckFinished.accept(true)
+            return
+        }
+        checkingInstall = true
         Logger.log("checkInstall", level: .debug)
         getHelperStatus { [weak self] status in
             Logger.log("check result: \(status)", level: .debug)
             guard let self = self else { return }
+            self.checkingInstall = false
             switch status {
             case .noFound:
-                if #available(macOS 13, *) {
-                    let url = URL(string: "/Library/LaunchDaemons/\(PrivilegedHelperManager.machServiceName).plist")!
-                    let status = SMAppService.statusForLegacyPlist(at: url)
-                    if status == .requiresApproval {
-                        let alert = NSAlert()
-                        let notice = NSLocalizedString("ClashX use a daemon helper to setup your system proxy. Please enable ClashX in the Login Items under the Allow in the Background section and relaunch the app", comment: "")
-                        let addition = NSLocalizedString("If you can not find ClashX in the settings, you can try reset daemon", comment: "")
-                        alert.messageText = notice + "\n" + addition
-                        alert.addButton(withTitle: NSLocalizedString("Open System Login Item Setting", comment: ""))
-                        alert.addButton(withTitle: NSLocalizedString("Reset Daemon", comment: ""))
-                        if alert.runModal() == .alertFirstButtonReturn {
-                            SMAppService.openSystemSettingsLoginItems()
-                        } else {
-                            self.removeInstallHelper()
-                        }
-                    }
-                }
-                fallthrough
+                self.notifyInstall()
             case .needUpdate:
                 Logger.log("need to install helper", level: .debug)
-                if Thread.isMainThread {
-                    self.notifyInstall()
-                } else {
-                    DispatchQueue.main.async {
-                        self.notifyInstall()
-                    }
-                }
+                self.notifyInstall()
             case .installed:
                 self.isHelperCheckFinished.accept(true)
             }
@@ -200,52 +188,69 @@ class PrivilegedHelperManager {
 
 extension PrivilegedHelperManager {
     private func notifyInstall() {
-        guard showInstallHelperAlert() else { exit(0) }
+        switch showInstallHelperAlert() {
+        case .quit:
+            exit(0)
+        case .cancel:
+            cancelInstallCheck = true
+            isHelperCheckFinished.accept(true)
+            Logger.log("cancelInstallCheck = true", level: .error)
+            return
+        case .install:
+            break
+        }
 
         if cancelInstallCheck {
             return
         }
 
-        if useLegacyInstall {
-            legacyInstallHelper()
-            if !cancelInstallCheck {
-                checkInstall()
-            }
+        let result = installHelperDaemon()
+        if case .success = result {
+            verifyInstallAfterAttempt()
             return
         }
 
-        let result = installHelperDaemon()
-        if case .success = result {
-            return
-        }
         result.alertAction()
         NSAlert.alert(with: result.alertContent)
-        if !cancelInstallCheck {
-            checkInstall()
+        cancelInstallCheck = true
+        isHelperCheckFinished.accept(true)
+    }
+
+    private func verifyInstallAfterAttempt() {
+        getHelperStatus { [weak self] status in
+            guard let self = self else { return }
+            switch status {
+            case .installed:
+                self.cancelInstallCheck = false
+                self.isHelperCheckFinished.accept(true)
+            case .noFound, .needUpdate:
+                Logger.log("helper still unavailable after install attempt", level: .error)
+                self.cancelInstallCheck = true
+                self.isHelperCheckFinished.accept(true)
+            }
         }
     }
 
-    private func showInstallHelperAlert() -> Bool {
+    private enum HelperInstallChoice {
+        case install
+        case quit
+        case cancel
+    }
+
+    private func showInstallHelperAlert() -> HelperInstallChoice {
         let alert = NSAlert()
         alert.messageText = NSLocalizedString("ClashX needs to install/update a helper tool with administrator privileges, otherwise ClashX won't be able to configure system proxy.", comment: "")
         alert.alertStyle = .warning
-        if useLegacyInstall {
-            alert.addButton(withTitle: NSLocalizedString("Legacy Install", comment: ""))
-        } else {
-            alert.addButton(withTitle: NSLocalizedString("Install", comment: ""))
-        }
+        alert.addButton(withTitle: NSLocalizedString("Install", comment: ""))
         alert.addButton(withTitle: NSLocalizedString("Quit", comment: ""))
         alert.addButton(withTitle: NSLocalizedString("Cancel", comment: ""))
         switch alert.runModal() {
         case .alertFirstButtonReturn:
-            return true
+            return .install
         case .alertThirdButtonReturn:
-            cancelInstallCheck = true
-            isHelperCheckFinished.accept(true)
-            Logger.log("cancelInstallCheck = true", level: .error)
-            return true
+            return .cancel
         default:
-            return false
+            return .quit
         }
     }
 }

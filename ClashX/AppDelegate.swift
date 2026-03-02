@@ -282,8 +282,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 }
 
                 self.snifferMenuItem.state = config.sniffing ? .on : .off
-                self.tunModeMenuItem.state = config.tun.enable ? .on : .off
-                ConfigManager.shared.isTunModeVariable.accept(config.tun.enable)
+                let tunEnable = self.preferredTunEnable(from: config)
+                self.tunModeMenuItem.state = tunEnable ? .on : .off
+                ConfigManager.shared.isTunModeVariable.accept(tunEnable)
             }.disposed(by: disposeBag)
 		
 		if !PrivilegedHelperManager.shared.isHelperCheckFinished.value {
@@ -433,7 +434,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
             guard let config = ConfigManager.shared.currentConfig else { return }
 
-            let enable = config.tun.enable
+            let enable = preferredTunEnable(from: config)
 
             if isInit, !enable {
                 Logger.log("tun didn't set")
@@ -819,10 +820,36 @@ extension AppDelegate {
 // MARK: Meta Menu
 
 extension AppDelegate {
+    private func preferredTunEnable(from config: ClashConfig) -> Bool {
+        ConfigManager.shared.manualTunEnableOverride ?? config.tun.enable
+    }
+
+    private func persistTunModeToCurrentConfig(_ enable: Bool) {
+        ApiRequest.findConfigPath(configName: ConfigManager.selectConfigName) { path in
+            guard let path,
+                  let configData = FileManager.default.contents(atPath: path),
+                  let newConfigContent = ClashMetaConfig.updateConfigTunContent(configData, enable: enable)
+            else {
+                Logger.log("persist tun mode failed: load config", level: .warning)
+                return
+            }
+
+            ConfigFileManager.shared.pauseForNextChange()
+            do {
+                try newConfigContent.write(toFile: path, atomically: true, encoding: .utf8)
+                Logger.log("persist tun mode succeeded: \(enable)", level: .debug)
+            } catch {
+                Logger.log("persist tun mode failed: \(error.localizedDescription)", level: .error)
+            }
+        }
+    }
+
     @IBAction func actionSetTunMode(_ sender: NSMenuItem?) {
         let enable = tunModeMenuItem.state != .on
 		tunModeMenuItem.isEnabled = false
         ApiRequest.updateTun(enable: enable) {
+            ConfigManager.shared.manualTunEnableOverride = enable ? true : nil
+            self.persistTunModeToCurrentConfig(enable)
             self.syncConfigWithTun {
 				self.tunModeMenuItem.state = enable ? .on : .off
 				self.tunModeMenuItem.isEnabled = true

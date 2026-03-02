@@ -94,6 +94,7 @@ class ApiRequest {
 	private var trafficWebSocketRetryTimer: Timer?
 	private var loggingWebSocketRetryTimer: Timer?
 	private var memoryWebSocketRetryTimer: Timer?
+	private var trafficRunningStateCheckTimer: Timer?
     
     private var logRateLimiter = LogRateLimiter {
         let alert = NSAlert()
@@ -635,12 +636,14 @@ extension ApiRequest {
         requestLog()
     }
 
-    func resetTrafficStreamApi() {
-        trafficWebSocketRetryTimer?.invalidate()
-        trafficWebSocketRetryTimer = nil
-        trafficWebSocketRetryDelay = 1
-        requestTrafficInfo()
-    }
+	func resetTrafficStreamApi() {
+		trafficWebSocketRetryTimer?.invalidate()
+		trafficWebSocketRetryTimer = nil
+		trafficWebSocketRetryDelay = 1
+		trafficRunningStateCheckTimer?.invalidate()
+		trafficRunningStateCheckTimer = nil
+		requestTrafficInfo()
+	}
 	
 	func resetMemoryStreamApi() {
 		memoryWebSocketRetryTimer?.invalidate()
@@ -649,10 +652,12 @@ extension ApiRequest {
 		requestMemoryInfo()
 	}
 
-    private func requestTrafficInfo() {
-        trafficWebSocketRetryTimer?.invalidate()
-        trafficWebSocketRetryTimer = nil
-        trafficWebSocket?.disconnect(forceTimeout: 0.5)
+	private func requestTrafficInfo() {
+		trafficWebSocketRetryTimer?.invalidate()
+		trafficWebSocketRetryTimer = nil
+		trafficRunningStateCheckTimer?.invalidate()
+		trafficRunningStateCheckTimer = nil
+		trafficWebSocket?.disconnect(forceTimeout: 0.5)
 
         let socket = WebSocket(url: URL(string: ConfigManager.apiUrl.appending("/traffic"))!)
 
@@ -701,6 +706,8 @@ extension ApiRequest: WebSocketDelegate {
 		switch webSocket {
 		case trafficWebSocket:
 			trafficWebSocketRetryDelay = 1
+			trafficRunningStateCheckTimer?.invalidate()
+			trafficRunningStateCheckTimer = nil
 			Logger.log("trafficWebSocket did Connect", level: .debug)
 			
 			ConfigManager.shared.isRunning = true
@@ -720,7 +727,7 @@ extension ApiRequest: WebSocketDelegate {
 	func websocketDidDisconnect(socket: WebSocketClient, error: Error?) {
 		
 		if (socket as? WebSocket) == trafficWebSocket {
-			ConfigManager.shared.isRunning = false
+			scheduleRunningStateCheckAfterTrafficDisconnect()
 			delegate?.streamStatusChanged()
 			dashboardDelegate?.streamStatusChanged()
 		}
@@ -767,6 +774,36 @@ extension ApiRequest: WebSocketDelegate {
 			memoryWebSocketRetryDelay *= 2
 		default:
 			return
+		}
+	}
+
+	private func scheduleRunningStateCheckAfterTrafficDisconnect() {
+		trafficRunningStateCheckTimer?.invalidate()
+		trafficRunningStateCheckTimer = Timer.scheduledTimer(withTimeInterval: 3, repeats: false) { [weak self] _ in
+			guard let self = self else { return }
+			guard self.trafficWebSocket?.isConnected != true else { return }
+
+			self.alamoFireManager
+				.request(ConfigManager.apiUrl + "/version",
+						 method: .get,
+						 headers: ApiRequest.authHeader())
+				.responseDecodable(of: ClashVersion.self) { result in
+					switch result.result {
+					case .success:
+						if !ConfigManager.shared.isRunning {
+							ConfigManager.shared.isRunning = true
+							self.delegate?.streamStatusChanged()
+							self.dashboardDelegate?.streamStatusChanged()
+						}
+					case let .failure(err):
+						Logger.log("traffic disconnect running check failed: \(err.localizedDescription)", level: .warning)
+						if ConfigManager.shared.isRunning {
+							ConfigManager.shared.isRunning = false
+							self.delegate?.streamStatusChanged()
+							self.dashboardDelegate?.streamStatusChanged()
+						}
+					}
+				}
 		}
 	}
 
