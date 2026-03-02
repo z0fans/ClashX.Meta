@@ -38,6 +38,25 @@ class PrivilegedHelperManager {
         isHelperCheckFinished.accept(true)
     }
 
+    func prepareInstallCheck() {
+        cancelInstallCheck = false
+        checkingInstall = false
+        isHelperCheckFinished.accept(false)
+    }
+
+    func isHelperInstalledOnDisk() -> Bool {
+        let fileManager = FileManager.default
+        let newHelperPath = "/Library/PrivilegedHelperTools/\(PrivilegedHelperManager.machServiceName)"
+        let newPlistPath = "/Library/LaunchDaemons/\(PrivilegedHelperManager.machServiceName).plist"
+        let oldHelperPath = "/Library/PrivilegedHelperTools/\(PrivilegedHelperManager.legacyMachServiceName)"
+        let oldPlistPath = "/Library/LaunchDaemons/\(PrivilegedHelperManager.legacyMachServiceName).plist"
+
+        return fileManager.fileExists(atPath: newHelperPath) ||
+            fileManager.fileExists(atPath: newPlistPath) ||
+            fileManager.fileExists(atPath: oldHelperPath) ||
+            fileManager.fileExists(atPath: oldPlistPath)
+    }
+
     // MARK: - Public
 
     func checkInstall() {
@@ -97,13 +116,16 @@ class PrivilegedHelperManager {
             return .authorizationFail
         }
 
-        // Ask user for the admin privileges to install the
         var authItem = AuthorizationItem(name: (kSMRightBlessPrivilegedHelper as NSString).utf8String!, valueLength: 0, value: nil, flags: 0)
         var authRights = withUnsafeMutablePointer(to: &authItem) { pointer in
             AuthorizationRights(count: 1, items: pointer)
         }
-        let flags: AuthorizationFlags = [[], .interactionAllowed, .extendRights, .preAuthorize]
-        authStatus = AuthorizationCreate(&authRights, nil, flags, &authRef)
+        let flags: AuthorizationFlags = [.interactionAllowed, .extendRights, .preAuthorize]
+        if let authRef {
+            authStatus = AuthorizationCopyRights(authRef, &authRights, nil, flags, nil)
+        } else {
+            authStatus = errAuthorizationInternal
+        }
         defer {
             if let ref = authRef {
                 AuthorizationFree(ref, [])
@@ -118,9 +140,16 @@ class PrivilegedHelperManager {
         // Launch the privileged helper using SMJobBless tool
         var error: Unmanaged<CFError>?
         if SMJobBless(kSMDomainSystemLaunchd, PrivilegedHelperManager.machServiceName as CFString, authRef, &error) == false {
-            let blessError = error!.takeRetainedValue() as Error
-            Logger.log("Bless Error: \(blessError)", level: .error)
-            return .blessError((blessError as NSError).code)
+            guard let blessError = error?.takeRetainedValue() else {
+                Logger.log("Bless Error: domain=unknown code=-1", level: .error)
+                return .blessError(-1)
+            }
+            let domain = CFErrorGetDomain(blessError) as String
+            let code = CFErrorGetCode(blessError)
+            let description = (CFErrorCopyDescription(blessError) as String?) ?? ""
+            let userInfo = CFErrorCopyUserInfo(blessError) as NSDictionary
+            Logger.log("Bless Error: domain=\(domain) code=\(code) desc=\(description) userInfo=\(userInfo)", level: .error)
+            return .blessError(code)
         }
 
         Logger.log("\(PrivilegedHelperManager.machServiceName) installed successfully", level: .info)

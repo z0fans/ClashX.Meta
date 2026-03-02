@@ -13,15 +13,37 @@ class DebugSettingViewController: NSViewController {
     @IBOutlet var useBuiltinApiButton: NSButton!
     @IBOutlet var revertProxyButton: NSButton!
     @IBOutlet var updateChannelPopButton: NSPopUpButton!
+    @IBOutlet var installProxyHelperButton: NSButton?
     var disposeBag = DisposeBag()
     override func viewDidLoad() {
         super.viewDidLoad()
         useBuiltinApiButton.state = Settings.builtInApiMode ? .on : .off
         revertProxyButton.state = Settings.disableRestoreProxy ? .off : .on
+        refreshProxyHelperButtonTitle()
+
+        PrivilegedHelperManager.shared.isHelperCheckFinished
+            .asObservable()
+            .observe(on: MainScheduler.instance)
+            .filter { $0 }
+            .subscribe(onNext: { [weak self] _ in
+                self?.refreshProxyHelperButtonTitle()
+            }).disposed(by: disposeBag)
+    }
+
+    private func refreshProxyHelperButtonTitle() {
+        let titleKey = PrivilegedHelperManager.shared.isHelperInstalledOnDisk() ? "Uninstall Proxy Helper" : "Install"
+        installProxyHelperButton?.title = NSLocalizedString(titleKey, comment: "")
     }
 
     @IBAction func actionUnInstallProxyHelper(_ sender: Any) {
-        PrivilegedHelperManager.shared.removeInstallHelper()
+        if PrivilegedHelperManager.shared.isHelperInstalledOnDisk() {
+            PrivilegedHelperManager.shared.removeInstallHelper()
+            refreshProxyHelperButtonTitle()
+            return
+        }
+
+        PrivilegedHelperManager.shared.prepareInstallCheck()
+        PrivilegedHelperManager.shared.checkInstall()
     }
 
     @IBAction func actionOpenLogFolder(_ sender: Any) {
