@@ -33,6 +33,11 @@ class PrivilegedHelperManager {
         !cancelInstallCheck
     }
 
+    func cancelInstallCheckAndFinish() {
+        cancelInstallCheck = true
+        isHelperCheckFinished.accept(true)
+    }
+
     // MARK: - Public
 
     func checkInstall() {

@@ -16,7 +16,7 @@ import PromiseKit
 
 let statusItemLengthWithSpeed: CGFloat = 72
 
-private let MetaCoreMd5 = "WOSHIZIDONGSHENGCHENGDEA"
+private let MetaCoreMd5 = "8ef66c57f1de815ff4a6b4e66d85aa66"
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -434,7 +434,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
             guard let config = ConfigManager.shared.currentConfig else { return }
 
-            let enable = preferredTunEnable(from: config)
+            let enable = self.preferredTunEnable(from: config)
 
             if isInit, !enable {
                 Logger.log("tun didn't set")

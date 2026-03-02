@@ -28,8 +28,7 @@ extension PrivilegedHelperManager {
     }
 
     func removeInstallHelper() {
-        cancelInstallCheck = true
-        isHelperCheckFinished.accept(true)
+        cancelInstallCheckAndFinish()
         defer {
             resetConnection()
             Thread.sleep(forTimeInterval: 5)
