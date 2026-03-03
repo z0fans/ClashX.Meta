@@ -26,3 +26,8 @@ clash.meta
 *.app/**
 ClashX.app.dSYM.zip
 build_derived_data
+
+# local development tooling
+.serena/project.yml
+.serena/memories/
+.spec-workflow/
