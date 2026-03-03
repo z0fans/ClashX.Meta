@@ -23,19 +23,19 @@ class AlphaMetaDownloader: NSObject {
 		func des() -> String {
 			switch self {
 			case .decodeReleaseInfoFailed:
-				return "Decode alpha release info failed"
+				return NSLocalizedString("Decode alpha release info failed", comment: "")
 			case .notFoundUpdate:
-				return "Not found update"
+				return NSLocalizedString("Not found update", comment: "")
 			case .downloadFailed:
-				return "Download failed"
+				return NSLocalizedString("Download failed", comment: "")
 			case .testFailed:
-				return "Test downloaded file failed"
+				return NSLocalizedString("Test downloaded file failed", comment: "")
             case .checksumFailed:
-                return "Checksum failed"
+                return NSLocalizedString("Checksum failed", comment: "")
             case .downloadChecksumFailed:
-                return "Download checksum failed"
+                return NSLocalizedString("Download checksum failed", comment: "")
 			case .unknownError:
-				return "Unknown error"
+				return NSLocalizedString("Unknown error", comment: "")
 			}
 		}
 	}

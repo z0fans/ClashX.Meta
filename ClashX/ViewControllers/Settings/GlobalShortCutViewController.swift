@@ -81,8 +81,8 @@ class GlobalShortCutViewController: NSViewController {
 		let tunProxy = getRecoder(for: .toggleTunProxyMode)
         let copyShellCommand = getRecoder(for: .copyShellCommand)
         let copyShellCommandExternal = getRecoder(for: .copyExternalShellCommand)
-        addGridView(in: proxyBox.contentView!, with: [
-			[NSTextField(labelWithString: NSLocalizedString("Enhanced Mode", comment: "")),tunProxy],
+		addGridView(in: proxyBox.contentView!, with: [
+			[NSTextField(labelWithString: NSLocalizedString("Tun Mode", comment: "")),tunProxy],
             [NSTextField(labelWithString: NSLocalizedString("System Proxy", comment: "")),systemProxy],
             [NSTextField(labelWithString: NSLocalizedString("Copy Shell Command", comment: "")),copyShellCommand],
             [NSTextField(labelWithString: NSLocalizedString("Copy Shell Command (External)", comment: "")),copyShellCommandExternal],

@@ -630,20 +630,20 @@ extension AppDelegate: ClashProcessDelegate {
 		let unc = UserNotificationCenter.shared
 		switch error {
 		case StartMetaError.configMissing:
-			unc.postConfigErrorNotice(msg: "Can't find config.")
+			unc.postConfigErrorNotice(msg: NSLocalizedString("Can't find config.", comment: ""))
 		case StartMetaError.remoteConfigMissing:
-			unc.postConfigErrorNotice(msg: "Can't find remote config.")
+			unc.postConfigErrorNotice(msg: NSLocalizedString("Can't find remote config.", comment: ""))
 		case StartMetaError.helperNotFound:
 			if !autoStartAfterHelperReady {
 				return
 			}
-			unc.postMetaErrorNotice(msg: "Can't connect to helper.")
+			unc.postMetaErrorNotice(msg: NSLocalizedString("Can't connect to helper.", comment: ""))
 		case StartMetaError.startMetaFailed(let s):
 			unc.postMetaErrorNotice(msg: s)
 		case StartMetaError.pushConfigFailed(let s):
 			unc.postConfigErrorNotice(msg: s)
 		default:
-			unc.postMetaErrorNotice(msg: "Unknown Error.")
+			unc.postMetaErrorNotice(msg: NSLocalizedString("Unknown Error.", comment: ""))
 		}
 	}
 }

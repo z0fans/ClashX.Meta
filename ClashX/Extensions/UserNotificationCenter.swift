@@ -93,12 +93,13 @@ class UserNotificationCenter: NSObject {
 	}
 	
 	func postStreamApiConnectFail(api: String) {
-		post(title: "\(api) api connect error!",
+		let title = String(format: NSLocalizedString("%@ api connect error!", comment: ""), api)
+		post(title: title,
 			 info: NSLocalizedString("Use reload config to try reconnect.", comment: ""))
 	}
 	
 	func postMetaErrorNotice(msg: String) {
-		let message = "Meta Core: \(msg)"
+		let message = String(format: NSLocalizedString("Meta Core: %@", comment: ""), msg)
 		postNotificationAlert(title: NSLocalizedString("Start Meta Fail!", comment: ""), info: message)
 	}
 	
@@ -131,7 +132,7 @@ class UserNotificationCenter: NSObject {
 	}
 	
 	func postUpdateNotice(msg: String) {
-		postNotificationAlert(title: "Update ClashX Meta", info: msg)
+		postNotificationAlert(title: NSLocalizedString("Update ClashX Meta", comment: ""), info: msg)
 	}
 }
 
