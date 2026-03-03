@@ -376,3 +376,63 @@
 
 /* No comment provided by engineer. */
 "Version: " = "Version: ";
+
+/* No comment provided by engineer. */
+"Tun Mode" = "Tun Mode";
+
+/* No comment provided by engineer. */
+"%@ api connect error!" = "%@ api connect error!";
+
+/* No comment provided by engineer. */
+"Meta Core: %@" = "Meta Core: %@";
+
+/* No comment provided by engineer. */
+"Update ClashX Meta" = "Update ClashX Meta";
+
+/* No comment provided by engineer. */
+"Can't find config." = "Can't find config.";
+
+/* No comment provided by engineer. */
+"Can't find remote config." = "Can't find remote config.";
+
+/* No comment provided by engineer. */
+"Can't connect to helper." = "Can't connect to helper.";
+
+/* No comment provided by engineer. */
+"Unknown Error." = "Unknown Error.";
+
+/* No comment provided by engineer. */
+"Clash Meta Core" = "Clash Meta Core";
+
+/* No comment provided by engineer. */
+"Decode alpha release info failed" = "Decode alpha release info failed";
+
+/* No comment provided by engineer. */
+"Not found update" = "Not found update";
+
+/* No comment provided by engineer. */
+"Download failed" = "Download failed";
+
+/* No comment provided by engineer. */
+"Test downloaded file failed" = "Test downloaded file failed";
+
+/* No comment provided by engineer. */
+"Checksum failed" = "Checksum failed";
+
+/* No comment provided by engineer. */
+"Download checksum failed" = "Download checksum failed";
+
+/* No comment provided by engineer. */
+"Unknown error" = "Unknown error";
+
+/* MetaPrefs */
+"Meta Setting" = "Meta Setting";
+"Hide unselectable" = "Hide unselectable";
+"Tun DNS:" = "Tun DNS:";
+"Local DNS is better" = "Local DNS is better";
+"Dashboard:" = "Dashboard:";
+"SwiftUI (macOS 12.0+ only)" = "SwiftUI (macOS 12.0+ only)";
+"Alpha Core" = "Alpha Core";
+"Use alpha meta" = "Use alpha meta";
+"Show in Finder" = "Show in Finder";
+"Requires restart ClashX Meta to take effect." = "Requires restart ClashX Meta to take effect.";

@@ -10,7 +10,10 @@ import Network
 
 class MetaPrefsViewController: NSViewController {
 	// Meta Setting
+	@IBOutlet var metaSettingBox: NSBox!
 	@IBOutlet var hideUnselectableButton: NSButton!
+	@IBOutlet var tunDNSLabel: NSTextField!
+	@IBOutlet var localDNSHintLabel: NSTextField!
 	
 	@IBAction func hideUnselectable(_ sender: NSButton) {
 		var newState = NSControl.StateValue.off
@@ -38,6 +41,7 @@ class MetaPrefsViewController: NSViewController {
 	}
 	
 	// Dashboard
+	@IBOutlet var dashboardLabel: NSTextField!
 	@IBOutlet var useSwiftuiButton: NSButton!
 	@IBOutlet var useYacdButton: NSButton!
 	@IBOutlet var useXDButton: NSButton!
@@ -62,7 +66,9 @@ class MetaPrefsViewController: NSViewController {
 	}
 	
 	// Alpha Core
+	@IBOutlet var alphaCoreBox: NSBox!
 	@IBOutlet var useAlphaButton: NSButton!
+	@IBOutlet var versionLabel: NSTextField!
 	@IBOutlet var alphaVersionTextField: NSTextField!
 	@IBOutlet var updateButton: NSButton!
 	@IBOutlet var updateProgressIndicator: NSProgressIndicator!
@@ -105,11 +111,11 @@ class MetaPrefsViewController: NSViewController {
 				await MainActor.run {
 					self.updateAlphaVersion(newVer)
 					let msg = NSLocalizedString("Version: ", comment: "") + newVer
-					UserNotificationCenter.shared.post(title: "Clash Meta Core", info: msg)
+					UserNotificationCenter.shared.post(title: NSLocalizedString("Clash Meta Core", comment: ""), info: msg)
 				}
 			} catch {
 				let error = error as? AlphaMetaDownloader.errors
-				UserNotificationCenter.shared.post(title: "Clash Meta Core", info: error?.des() ?? "")
+				UserNotificationCenter.shared.post(title: NSLocalizedString("Clash Meta Core", comment: ""), info: error?.des() ?? "")
 			}
 			
 			await MainActor.run {
@@ -132,9 +138,27 @@ class MetaPrefsViewController: NSViewController {
 	var prefsSnapshot = [String]()
 	var versionSnapshot = "none"
 	var alphaCoreUpdated = false
+
+	func localizeUI() {
+		metaSettingBox.title = NSLocalizedString("Meta Setting", comment: "")
+		hideUnselectableButton.title = NSLocalizedString("Hide unselectable", comment: "")
+		tunDNSLabel.stringValue = NSLocalizedString("Tun DNS:", comment: "")
+		localDNSHintLabel.stringValue = NSLocalizedString("Local DNS is better", comment: "")
+
+		dashboardLabel.stringValue = NSLocalizedString("Dashboard:", comment: "")
+		useSwiftuiButton.title = NSLocalizedString("SwiftUI (macOS 12.0+ only)", comment: "")
+
+		alphaCoreBox.title = NSLocalizedString("Alpha Core", comment: "")
+		useAlphaButton.title = NSLocalizedString("Use alpha meta", comment: "")
+		versionLabel.stringValue = NSLocalizedString("Version: ", comment: "")
+		showAlphaButton.title = NSLocalizedString("Show in Finder", comment: "")
+		restartTextField.stringValue = NSLocalizedString("Requires restart ClashX Meta to take effect.", comment: "")
+	}
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
+		localizeUI()
+
 		// Meta Setting
 		hideUnselectableButton.state = .init(rawValue: MenuItemFactory.hideUnselectable)
 		

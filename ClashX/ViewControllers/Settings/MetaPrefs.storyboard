@@ -333,10 +333,15 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="alphaCoreBox" destination="jTG-JZ-aJa" id="i5N-2h-fiv"/>
                         <outlet property="alphaVersionTextField" destination="yKt-RT-uZL" id="A2m-kO-WMQ"/>
+                        <outlet property="dashboardLabel" destination="Vgo-Xk-1pb" id="nzy-6D-6o3"/>
                         <outlet property="hideUnselectableButton" destination="Wig-IX-1hV" id="9dI-B3-Tbe"/>
+                        <outlet property="localDNSHintLabel" destination="uyA-iw-5fY" id="D3P-8r-jXm"/>
+                        <outlet property="metaSettingBox" destination="Lcd-RJ-vG1" id="dLO-LR-RlN"/>
                         <outlet property="restartTextField" destination="TTD-4f-gyL" id="gDw-gY-aSm"/>
                         <outlet property="showAlphaButton" destination="UWj-Su-skJ" id="v29-ZT-4mA"/>
+                        <outlet property="tunDNSLabel" destination="Syy-v6-wb3" id="n0m-HM-N3W"/>
                         <outlet property="tunDNSTextField" destination="YuJ-wO-puO" id="4xw-eF-vnz"/>
                         <outlet property="updateButton" destination="SRr-f9-XRY" id="suh-eD-eh8"/>
                         <outlet property="updateProgressIndicator" destination="ZLW-Hh-cDO" id="Ojv-7K-OyZ"/>
@@ -345,6 +350,7 @@
                         <outlet property="useXDButton" destination="uY1-el-AeU" id="HZy-K3-ZU5"/>
                         <outlet property="useYacdButton" destination="Fty-b5-ZE7" id="6aE-xC-JX7"/>
                         <outlet property="useZashButton" destination="LNg-A6-hxT" id="XEk-nu-4Jr"/>
+                        <outlet property="versionLabel" destination="0zZ-n3-FuW" id="iRl-W2-t2v"/>
                     </connections>
                 </viewController>
                 <customObject id="9uD-mB-xHs" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

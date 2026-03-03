@@ -384,3 +384,60 @@
 
 /* No comment provided by engineer. */
 "Tun Mode" = "增强模式";
+
+/* No comment provided by engineer. */
+"%@ api connect error!" = "%@ API 连接错误！";
+
+/* No comment provided by engineer. */
+"Meta Core: %@" = "Meta 内核：%@";
+
+/* No comment provided by engineer. */
+"Update ClashX Meta" = "更新 ClashX Meta";
+
+/* No comment provided by engineer. */
+"Can't find config." = "找不到配置文件。";
+
+/* No comment provided by engineer. */
+"Can't find remote config." = "找不到远程配置文件。";
+
+/* No comment provided by engineer. */
+"Can't connect to helper." = "无法连接助手程序。";
+
+/* No comment provided by engineer. */
+"Unknown Error." = "未知错误。";
+
+/* No comment provided by engineer. */
+"Clash Meta Core" = "Clash Meta 内核";
+
+/* No comment provided by engineer. */
+"Decode alpha release info failed" = "解析 Alpha 版本信息失败";
+
+/* No comment provided by engineer. */
+"Not found update" = "未找到可更新版本";
+
+/* No comment provided by engineer. */
+"Download failed" = "下载失败";
+
+/* No comment provided by engineer. */
+"Test downloaded file failed" = "下载文件测试失败";
+
+/* No comment provided by engineer. */
+"Checksum failed" = "校验失败";
+
+/* No comment provided by engineer. */
+"Download checksum failed" = "下载校验文件失败";
+
+/* No comment provided by engineer. */
+"Unknown error" = "未知错误";
+
+/* MetaPrefs */
+"Meta Setting" = "Meta 设置";
+"Hide unselectable" = "隐藏不可选择项";
+"Tun DNS:" = "Tun DNS:";
+"Local DNS is better" = "建议使用本地 DNS";
+"Dashboard:" = "面板:";
+"SwiftUI (macOS 12.0+ only)" = "SwiftUI (仅 macOS 12.0+)";
+"Alpha Core" = "Alpha 内核";
+"Use alpha meta" = "使用 Alpha Meta 内核";
+"Show in Finder" = "在 Finder 中显示";
+"Requires restart ClashX Meta to take effect." = "需要重启 ClashX Meta 才能生效。";
