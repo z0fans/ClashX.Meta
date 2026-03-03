@@ -539,11 +539,11 @@
                 <application id="hnw-xV-0zn" sceneMemberID="viewController">
                     <menu key="mainMenu" title="Main Menu" systemMenu="main" id="AYu-sK-qS6">
                         <items>
-                            <menuItem title="ClashX" id="1Xt-HY-uBw" userLabel="ClashX">
+                            <menuItem title="ClashX Meta" id="1Xt-HY-uBw" userLabel="ClashX Meta">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="ClashX" systemMenu="apple" id="uQy-DD-JDr">
+                                <menu key="submenu" title="ClashX Meta" systemMenu="apple" id="uQy-DD-JDr">
                                     <items>
-                                        <menuItem title="Quit ClashX" keyEquivalent="q" id="TsN-g8-OjG">
+                                        <menuItem title="Quit ClashX Meta" keyEquivalent="q" id="TsN-g8-OjG">
                                             <connections>
                                                 <action selector="terminate:" target="Ady-hI-5gd" id="u3Z-Ml-nGa"/>
                                             </connections>
@@ -1766,7 +1766,7 @@
                                                         </textField>
                                                         <button verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="tHw-or-Djh">
                                                             <rect key="frame" x="105" y="-7" width="79" height="32"/>
-                                                            <buttonCell key="cell" type="push" title="Update" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="pHl-C4-fNt">
+                                                            <buttonCell key="cell" type="push" title="Update" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="pHl-C4-fNt">
                                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                 <font key="font" metaFont="system"/>
                                                                 <connections>
@@ -2009,6 +2009,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="installProxyHelperButton" destination="tk3-Vg-1aq" id="q4Q-q2-ZZQ"/>
                         <outlet property="revertProxyButton" destination="2Ch-iR-H6t" id="jlF-TH-7VZ"/>
                         <outlet property="updateChannelPopButton" destination="gjb-nb-14I" id="N0w-Tq-jTZ"/>
                         <outlet property="useBuiltinApiButton" destination="5WY-QP-cCq" id="Z8u-x9-TWV"/>

@@ -254,8 +254,12 @@ extension PrivilegedHelperManager {
         }
 
         result.alertAction()
-        useLegacyInstall = result.shouldRetryLegacyWay()
-        NSAlert.alert(with: result.alertContent)
+        let shouldRetryLegacy = result.shouldRetryLegacyWay()
+        useLegacyInstall = shouldRetryLegacy
+        let shouldSuppressAlert = shouldRetryLegacy && result.shouldSuppressAlertWhenFallbackAvailable
+        if !shouldSuppressAlert {
+            NSAlert.alert(with: result.alertContent)
+        }
         if !cancelInstallCheck {
             checkInstall()
         }
@@ -269,7 +273,7 @@ extension PrivilegedHelperManager {
 
     private func showInstallHelperAlert() -> HelperInstallChoice {
         let alert = NSAlert()
-        alert.messageText = NSLocalizedString("ClashX needs to install/update a helper tool with administrator privileges, otherwise ClashX won't be able to configure system proxy.", comment: "")
+        alert.messageText = NSLocalizedString("ClashX Meta needs to install/update a helper tool with administrator privileges, otherwise ClashX Meta won't be able to configure system proxy.", comment: "")
         alert.alertStyle = .warning
         if useLegacyInstall {
             alert.addButton(withTitle: NSLocalizedString("Legacy Install", comment: ""))
@@ -315,15 +319,24 @@ private enum DaemonInstallResult {
             switch code {
             case kSMErrorInternalFailure: return "blessError: kSMErrorInternalFailure"
             case kSMErrorInvalidSignature: return "blessError: kSMErrorInvalidSignature"
-            case kSMErrorAuthorizationFailure: return "blessError: kSMErrorAuthorizationFailure"
+            case kSMErrorAuthorizationFailure: return "Helper authorization failed. Retrying with legacy install."
             case kSMErrorToolNotValid: return "blessError: kSMErrorToolNotValid"
             case kSMErrorJobNotFound: return "blessError: kSMErrorJobNotFound"
             case kSMErrorServiceUnavailable: return "blessError: kSMErrorServiceUnavailable"
-            case kSMErrorJobMustBeEnabled: return "ClashX Helper is disabled by other process. Please run \"sudo launchctl enable system/\(PrivilegedHelperManager.machServiceName)\" in your terminal. The command has been copied to your pasteboard"
+            case kSMErrorJobMustBeEnabled: return "ClashX Meta Helper is disabled by other process. Please run \"sudo launchctl enable system/\(PrivilegedHelperManager.machServiceName)\" in your terminal. The command has been copied to your pasteboard"
             case kSMErrorInvalidPlist: return "blessError: kSMErrorInvalidPlist"
             default:
                 return "bless unknown error:\(code)"
             }
+        }
+    }
+
+    var shouldSuppressAlertWhenFallbackAvailable: Bool {
+        switch self {
+        case let .blessError(code):
+            return code == kSMErrorAuthorizationFailure
+        default:
+            return false
         }
     }
 

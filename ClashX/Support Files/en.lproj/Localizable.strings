@@ -38,16 +38,16 @@
 "Cancel" = "Cancel";
 
 /* No comment provided by engineer. */
-"ClashX fail to create ~/.config/clash.meta folder. Please check privileges or manually create folder and restart ClashX." = "ClashX fail to create ~/.config/clash.meta folder. Please check privileges or manually create folder and restart ClashX.";
+"ClashX Meta fail to create ~/.config/clash.meta folder. Please check privileges or manually create folder and restart ClashX Meta." = "ClashX Meta fail to create ~/.config/clash.meta folder. Please check privileges or manually create folder and restart ClashX Meta.";
 
 /* No comment provided by engineer. */
-"ClashX needs to install/update a helper tool with administrator privileges, otherwise ClashX won't be able to configure system proxy." = "ClashX needs to install/update a helper tool with administrator privileges, otherwise ClashX won't be able to configure system proxy.";
+"ClashX Meta needs to install/update a helper tool with administrator privileges, otherwise ClashX Meta won't be able to configure system proxy." = "ClashX Meta needs to install/update a helper tool with administrator privileges, otherwise ClashX Meta won't be able to configure system proxy.";
 
 /* No comment provided by engineer. */
-"ClashX Start Error!" = "ClashX Start Error!";
+"ClashX Meta Start Error!" = "ClashX Meta Start Error!";
 
 /* No comment provided by engineer. */
-"ClashX use a daemon helper to setup your system proxy. Please enable ClashX in the Login Items under the Allow in the Background section and relaunch the app" = "ClashX use a daemon helper to setup your system proxy. Please enable ClashX in the Login Items under the Allow in the Background section and relaunch the app";
+"ClashX Meta uses a daemon helper to set up your system proxy. Please enable ClashX Meta in Login Items under Allow in the Background and relaunch the app" = "ClashX Meta uses a daemon helper to set up your system proxy. Please enable ClashX Meta in Login Items under Allow in the Background and relaunch the app";
 
 /* No comment provided by engineer. */
 "Click OK to quit the app and apply change." = "Click OK to quit the app and apply change.";
@@ -155,16 +155,25 @@
 "iCloud not available" = "iCloud not available";
 
 /* No comment provided by engineer. */
-"If you can not find ClashX in the settings, you can try reset daemon" = "If you can not find ClashX in the settings, you can try reset daemon";
+"If you can not find ClashX Meta in the settings, you can try reset daemon" = "If you can not find ClashX Meta in the settings, you can try reset daemon";
 
 /* No comment provided by engineer. */
 "Install" = "Install";
+
+/* No comment provided by engineer. */
+"Install Proxy Helper" = "Install Proxy Helper";
+
+/* No comment provided by engineer. */
+"Need to Restart ClashX Meta to take effect, please start ClashX Meta manually" = "Need to Restart ClashX Meta to take effect, please start ClashX Meta manually";
 
 /* No comment provided by engineer. */
 "Invalid input" = "Invalid input";
 
 /* No comment provided by engineer. */
 "Legacy Install" = "Legacy Install";
+
+/* No comment provided by engineer. */
+"Uninstall Proxy Helper" = "Uninstall Proxy Helper";
 
 /* No comment provided by engineer. */
 "Load Balance" = "Load Balance";
@@ -204,10 +213,10 @@
 "Open github release page to download " = "Open github release page to download ";
 
 /* No comment provided by engineer. */
-"Please enable the location service for ClashX to detect your current WiFi network's SSID name and provide the auto-suspend services." = "Please enable the location service for ClashX to detect your current WiFi network's SSID name and provide the auto-suspend services.";
+"Please enable the location service for ClashX Meta to detect your current WiFi network's SSID name and provide the auto-suspend services." = "Please enable location services for ClashX Meta to detect your current WiFi SSID and provide auto-suspend services.";
 
 /* No comment provided by engineer. */
-"Ports Open Fail, Please try to restart ClashX" = "Ports Open Fail, Please try to restart ClashX";
+"Ports Open Fail, Please try to restart ClashX Meta" = "Ports Open Fail, Please try to restart ClashX Meta";
 
 /* No comment provided by engineer. */
 "Prelease" = "Prelease";
@@ -216,13 +225,13 @@
 "Proxy Mode" = "Proxy Mode";
 
 /* No comment provided by engineer. */
-"Proxy settings are changed by another process. ClashX is no longer the default system proxy." = "Proxy settings are changed by another process. ClashX is no longer the default system proxy.";
+"Proxy settings are changed by another process. ClashX Meta is no longer the default system proxy." = "Proxy settings are changed by another process. ClashX Meta is no longer the default system proxy.";
 
 /* No comment provided by engineer. */
 "Quit" = "Quit";
 
 /* No comment provided by engineer. */
-"Quit ClashX?" = "Quit ClashX?";
+"Quit ClashX Meta?" = "Quit ClashX Meta?";
 
 /* No comment provided by engineer. */
 "Recent Connections" = "Recent Connections";
@@ -312,7 +321,7 @@
 "The status icon is coverd or hide by other app." = "The status icon is coverd or hide by other app.";
 
 /* No comment provided by engineer. */
-"This version of ClashX contains a break change due to clash core 1.0 released. Check if your config is not working properly." = "This version of ClashX contains a break change due to clash core 1.0 released. Check if your config is not working properly.";
+"This version of ClashX Meta contains a break change due to clash core 1.0 released. Check if your config is not working properly." = "This version of ClashX Meta contains a break change due to clash core 1.0 released. Check if your config is not working properly.";
 
 /* No comment provided by engineer. */
 "Update All Providers" = "Update All Providers";
@@ -343,6 +352,15 @@
 
 /* No comment provided by engineer. */
 "Updating GEO Databases..." = "Updating GEO Databases...";
+
+/* No comment provided by engineer. */
+"更新 GeoIP 成功" = "GeoIP update succeeded";
+
+/* No comment provided by engineer. */
+"更新 GeoIP 失败" = "GeoIP update failed";
+
+/* No comment provided by engineer. */
+"更新 GeoIP 超时" = "GeoIP update timed out";
 
 /* No comment provided by engineer. */
 "Upgrade Channel" = "Upgrade Channel";

@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>ClashX use location info to detect your current WiFi network SSID name and provide the auto suspend services.</string>
+	<string>ClashX Meta use location info to detect your current WiFi network SSID name and provide the auto suspend services.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>ClashX use location info to detect your current WiFi network SSID name and provide the auto suspend services.</string>
+	<string>ClashX Meta use location info to detect your current WiFi network SSID name and provide the auto suspend services.</string>
 	<key>BETA</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>

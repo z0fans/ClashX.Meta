@@ -124,7 +124,7 @@ struct ConnectionsTableView<Item: Hashable>: NSViewRepresentable {
 		
 		scrollView.documentView = tableView
 
-		tableView.autosaveName = "ClashX_Dashboard.Connections.TableView"
+		tableView.autosaveName = "ClashX_Meta.Dashboard.Connections.TableView"
 		tableView.autosaveTableColumns = true
 		
 		menu.items.forEach {

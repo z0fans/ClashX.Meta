@@ -86,7 +86,7 @@ class ClashWebViewContoller: NSViewController {
         webview.uiDelegate = self
         webview.navigationDelegate = self
 
-        webview.customUserAgent = "ClashX Runtime"
+        webview.customUserAgent = "ClashX Meta Runtime"
 #if DEBUG
         if #available(macOS 13.3, *) {
             webview.isInspectable = true

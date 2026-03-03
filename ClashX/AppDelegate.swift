@@ -59,12 +59,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     var disposeBag = DisposeBag()
     var statusItemView: StatusItemViewProtocol!
-    var isSpeedTesting = false
+	var isSpeedTesting = false
 
-    var runAfterConfigReload: (() -> Void)?
+	var runAfterConfigReload: (() -> Void)?
+	var autoStartAfterHelperReady = true
 	
-	var updateGeoTimer: Timer?
-	
+
 	let clashProcess = ClashProcess(MetaCoreMd5)
 
     func applicationWillFinishLaunching(_ notification: Notification) {
@@ -147,7 +147,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationWillTerminate(_ aNotification: Notification) {
         UserDefaults.standard.set(0, forKey: "launch_fail_times")
-        Logger.log("ClashX will terminate")
+        Logger.log("ClashX Meta will terminate")
         if NetworkChangeNotifier.isCurrentSystemSetToClash(looser: true) ||
             NetworkChangeNotifier.hasInterfaceProxySetToClash() {
             Logger.log("Need Reset Proxy Setting again", level: .error)
@@ -298,13 +298,27 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 					guard let self = self else { return }
 					self.proxySettingMenuItem.target = self
 					self.tunModeMenuItem.target = self
-					self.startProxyCore()
+					guard self.autoStartAfterHelperReady else { return }
+					self.tryStartProxyCoreIfHelperAvailable()
 				}.disposed(by: disposeBag)
 		} else {
 			self.proxySettingMenuItem.target = self
 			self.tunModeMenuItem.target = self
-			startProxyCore()
+			if autoStartAfterHelperReady {
+				tryStartProxyCoreIfHelperAvailable()
+			}
 		}
+
+		PrivilegedHelperManager.shared.isHelperCheckFinished
+			.asObservable()
+			.skip(1)
+			.filter { $0 }
+			.observe(on: MainScheduler.instance)
+			.subscribe(onNext: { [weak self] _ in
+				guard let self = self else { return }
+				guard self.autoStartAfterHelperReady else { return }
+				self.tryStartProxyCoreIfHelperAvailable()
+			}).disposed(by: disposeBag)
 
         LaunchAtLogin.shared
             .isEnableVirable
@@ -540,9 +554,25 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 // MARK: Meta Core
 
 extension AppDelegate: ClashProcessDelegate {
+	func setAutoStartAfterHelperReady(_ enabled: Bool) {
+		autoStartAfterHelperReady = enabled
+	}
+
+	func prepareForHelperMaintenance() {
+		clashProcess.stopForMaintenance()
+		ConfigManager.shared.isRunning = false
+		proxyModeMenuItem.isEnabled = false
+		dashboardMenuItem.isEnabled = false
+		resetStreamApi()
+	}
+
+	func tryStartProxyCoreIfHelperAvailable() {
+		guard PrivilegedHelperManager.shared.isHelperInstalledOnDisk() else { return }
+		startProxyCore()
+	}
 	
 	func startProxyCore() {
-		guard clashProcess.coreState == .stopped,
+		guard clashProcess.coreState == .stopped || clashProcess.coreState == .startFailed,
 			  !ConfigManager.shared.isRunning else { return }
 		
 		clashProcess.delegate = self
@@ -604,6 +634,9 @@ extension AppDelegate: ClashProcessDelegate {
 		case StartMetaError.remoteConfigMissing:
 			unc.postConfigErrorNotice(msg: "Can't find remote config.")
 		case StartMetaError.helperNotFound:
+			if !autoStartAfterHelperReady {
+				return
+			}
 			unc.postMetaErrorNotice(msg: "Can't connect to helper.")
 		case StartMetaError.startMetaFailed(let s):
 			unc.postMetaErrorNotice(msg: s)
@@ -858,33 +891,25 @@ extension AppDelegate {
     }
 
     @IBAction func updateGEO(_ sender: NSMenuItem) {
-		guard updateGeoTimer == nil else { return }
-		updateGeoTimer = Timer.scheduledTimer(withTimeInterval: 500, repeats: true) { [weak self] timer in
-			
-			timer.fireDate = .init(timeIntervalSinceNow: 5)
-			
-			ApiRequest.getRules { rules in
-				guard self?.updateGeoTimer != nil else { return }
-				if let rule = rules.first,
-				   rule.payload == ClashMetaConfig.initRulePayload {
-					Logger.log("Update GEO Finished.")
-					self?.updateConfig(showNotification: false) { _ in
-						UserNotificationCenter.shared.post(title: "Update GEO Databases Finished.", info: "")
-					}
-					
-					timer.invalidate()
-					self?.updateGeoTimer = nil
-				} else {
-					timer.fireDate = .init(timeIntervalSinceNow: 0.5)
+		UserNotificationCenter.shared.post(title: NSLocalizedString("Updating GEO Databases...", comment: ""), info: "")
+		ApiRequest.updateGEO { [weak self] accepted in
+			guard let self = self else { return }
+			guard accepted else {
+				Logger.log("Update GEO request failed", level: .error)
+				UserNotificationCenter.shared.post(title: NSLocalizedString("更新 GeoIP 失败", comment: ""), info: "")
+				return
+			}
+
+			Logger.log("Update GEO Finished.")
+			self.updateConfig(showNotification: false) { err in
+				if let err {
+					Logger.log("Update GEO reload config failed: \(err)", level: .error)
+					UserNotificationCenter.shared.post(title: NSLocalizedString("更新 GeoIP 失败", comment: ""), info: err)
+					return
 				}
+				UserNotificationCenter.shared.post(title: NSLocalizedString("更新 GeoIP 成功", comment: ""), info: "")
 			}
 		}
-		
-        ApiRequest.updateGEO { _ in
-			UserNotificationCenter.shared.post(title: NSLocalizedString("Updating GEO Databases...", comment: ""), info: NSLocalizedString("Good luck to you  🙃", comment: ""))
-			
-			self.updateGeoTimer?.fire()
-        }
     }
 
     @IBAction func flushDNSCache(_ sender: NSMenuItem) {

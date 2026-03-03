@@ -31,17 +31,21 @@ class DebugSettingViewController: NSViewController {
     }
 
     private func refreshProxyHelperButtonTitle() {
-        let titleKey = PrivilegedHelperManager.shared.isHelperInstalledOnDisk() ? "Uninstall Proxy Helper" : "Install"
+        let titleKey = PrivilegedHelperManager.shared.isHelperInstalledOnDisk() ? "Uninstall Proxy Helper" : "Install Proxy Helper"
         installProxyHelperButton?.title = NSLocalizedString(titleKey, comment: "")
     }
 
     @IBAction func actionUnInstallProxyHelper(_ sender: Any) {
+        AppDelegate.shared.prepareForHelperMaintenance()
+
         if PrivilegedHelperManager.shared.isHelperInstalledOnDisk() {
+            AppDelegate.shared.setAutoStartAfterHelperReady(false)
             PrivilegedHelperManager.shared.removeInstallHelper()
             refreshProxyHelperButtonTitle()
             return
         }
 
+        AppDelegate.shared.setAutoStartAfterHelperReady(true)
         PrivilegedHelperManager.shared.prepareInstallCheck()
         PrivilegedHelperManager.shared.checkInstall()
     }
@@ -77,7 +81,7 @@ class DebugSettingViewController: NSViewController {
 
     @IBAction func actionSetUseApiMode(_ sender: Any) {
         let alert = NSAlert()
-        alert.informativeText = NSLocalizedString("Need to Restart the ClashX to Take effect, Please start clashX manually", comment: "")
+        alert.informativeText = NSLocalizedString("Need to Restart ClashX Meta to take effect, please start ClashX Meta manually", comment: "")
         alert.addButton(withTitle: NSLocalizedString("Apply and Quit", comment: ""))
         alert.addButton(withTitle: NSLocalizedString("Cancel", comment: ""))
         if alert.runModal() == .alertFirstButtonReturn {

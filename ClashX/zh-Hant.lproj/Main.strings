@@ -313,8 +313,8 @@
 /* Class = "NSButtonCell"; title = "Enable IPv6"; ObjectID = "KRm-2U-T4s"; */
 "KRm-2U-T4s.title" = "啟用IPv6";
 
-/* Class = "NSMenuItem"; title = "Quit ClashX"; ObjectID = "TsN-g8-OjG"; */
-"TsN-g8-OjG.title" = "退出 ClashX";
+/* Class = "NSMenuItem"; title = "Quit ClashX Meta"; ObjectID = "TsN-g8-OjG"; */
+"TsN-g8-OjG.title" = "退出 ClashX Meta";
 
 /* Class = "NSTextFieldCell"; title = "Crash Log Folder"; ObjectID = "LFb-xY-CNV"; */
 "LFb-xY-CNV.title" = "崩潰日誌文件夾";

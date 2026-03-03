@@ -144,6 +144,12 @@ class ClashProcess: NSObject {
 			}
 		}
 	}
+
+	func stopForMaintenance() {
+		retryTimes = 0
+		PrivilegedHelperManager.shared.helper()?.stopMeta()
+		_coreState = .stopped
+	}
 	
 	func checkHelperVersion() -> Promise<String?> {
 		guard coreState.rawValue < CoreState.helperReady.rawValue else {

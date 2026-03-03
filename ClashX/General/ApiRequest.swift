@@ -30,7 +30,7 @@ class ApiRequest {
 
     private var proxyRespCache: ClashProxyResp?
 
-    private lazy var logQueue = DispatchQueue(label: "com.ClashX.core.log")
+    private lazy var logQueue = DispatchQueue(label: "com.ClashXMeta.core.log")
 
     static let clashRequestQueue = DispatchQueue(label: "com.clashx.clashRequestQueue")
 
@@ -185,7 +185,7 @@ class ApiRequest {
     }
 
     static func requestConfigUpdate(configPath: String, callback: @escaping ((ErrorString?) -> Void)) {
-        let placeHolderErrorDesp = "Error occoured, Please try to fix it by restarting ClashX. "
+        let placeHolderErrorDesp = "Error occoured, Please try to fix it by restarting ClashX Meta. "
 		req("/configs", method: .put, parameters: ["Path": configPath], encoding: JSONEncoding.default).responseData { res in
             if res.response?.statusCode == 204 {
                 ConfigManager.shared.isRunning = true
@@ -336,7 +336,10 @@ class ApiRequest {
 
     static func getRules(completeHandler: @escaping ([ClashRule]) -> Void) {
         req("/rules").responseData { res in
-            guard let data = try? res.result.get() else { return }
+            guard let data = try? res.result.get() else {
+                completeHandler([])
+                return
+            }
             let rule = ClashRuleResponse.fromData(data)
             completeHandler(rule.rules ?? [])
         }

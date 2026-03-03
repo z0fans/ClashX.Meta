@@ -70,7 +70,7 @@ class ClashResourceManager {
 
     static func showCreateConfigDirFailAlert(err: String) {
         let alert = NSAlert()
-        alert.messageText = NSLocalizedString("ClashX fail to create ~/.config/clash.meta folder. Please check privileges or manually create folder and restart ClashX." + err, comment: "")
+        alert.messageText = NSLocalizedString("ClashX Meta fail to create ~/.config/clash.meta folder. Please check privileges or manually create folder and restart ClashX Meta." + err, comment: "")
         alert.alertStyle = .warning
         alert.addButton(withTitle: NSLocalizedString("Quit", comment: ""))
         alert.runModal()
