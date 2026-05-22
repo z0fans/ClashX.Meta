@@ -101,12 +101,12 @@ class MetaPrefsViewController: NSViewController {
 		
 		Task {
 			do {
-                let assets = try await dl.alphaAssets()
-				let asset = try await dl.alphaCoreAsset(assets)
+				let release = try await dl.fetchStableRelease()
+				let asset = try dl.stableCoreAsset(release.assets)
 				let ver = try dl.checkVersion(asset)
 				let data = try await dl.downloadCore(ver)
-                let checksum = try await dl.checksumString(assets, asset: asset)
-                let newVer = try dl.replaceCore(data, checksum: checksum)
+				let checksum = try await dl.checksumString(release.assets, asset: asset)
+				let newVer = try dl.replaceCore(data, checksum: checksum)
 				
 				await MainActor.run {
 					self.updateAlphaVersion(newVer)

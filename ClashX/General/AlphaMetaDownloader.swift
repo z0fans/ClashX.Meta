@@ -245,7 +245,7 @@ extension AlphaMetaDownloader {
 	}
 
 	/// Fetch latest stable release info
-	private static func fetchStableRelease() async throws -> StableRelease {
+	static func fetchStableRelease() async throws -> StableRelease {
 		let session = proxySession()
 		guard let release = try? await session.request(stableReleaseURL)
 			.serializingDecodable(StableRelease.self).value else {
@@ -256,7 +256,7 @@ extension AlphaMetaDownloader {
 
 	/// Match the correct stable asset for current architecture
 	/// Pattern: mihomo-darwin-{arm64|amd64}-v{x.y.z}.gz
-	private static func stableCoreAsset(_ assets: [ReleasesResp.Asset]) throws -> ReleasesResp.Asset {
+	static func stableCoreAsset(_ assets: [ReleasesResp.Asset]) throws -> ReleasesResp.Asset {
 		guard let arch = assetName(),
 			  let asset = assets.first(where: {
 				  guard $0.state == "uploaded",

@@ -46,7 +46,7 @@ class ClashProcess: NSObject {
 		self.md5 = md5
 	}
 	
-	lazy var launchPath: (path: String?, err: String?) = {
+	var launchPath: (path: String?, err: String?) {
 		Logger.log("Get launchPath")
 		
 		guard let alphaCorePath = Paths.alphaCorePath(),
@@ -87,7 +87,7 @@ class ClashProcess: NSObject {
 			Logger.log(corePath.path)
 			return (nil, "Failure to verify the internal Meta Core.\nDo NOT replace core file in the resources folder.")
 		}
-	}()
+	}
 	
 	
 // MARK: start core
