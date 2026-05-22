@@ -134,6 +134,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         ConfigManager.watchCurrentConfigFile()
 
         RemoteConfigManager.shared.autoUpdateCheck()
+        AlphaMetaDownloader.autoCheckForUpdate()
 
         setupNetworkNotifier()
         registCrashLogger()

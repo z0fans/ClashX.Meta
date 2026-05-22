@@ -206,3 +206,130 @@ class AlphaMetaDownloader: NSObject {
 		return version
 	}
 }
+
+/// MARK: - Stable Release Auto Update Check
+extension AlphaMetaDownloader {
+
+	/// GitHub API for latest stable mihomo release
+	private static let stableReleaseURL = "https://api.github.com/repos/MetaCubeX/mihomo/releases/latest"
+
+	/// Check interval: 24 hours
+	private static let checkIntervalSeconds: TimeInterval = 24 * 60 * 60
+	private static let lastCheckKey = "stableCore_lastUpdateCheckTime"
+	private static let skipVersionKey = "stableCore_skipVersion"
+
+	struct StableRelease: Decodable {
+		let tagName: String
+		let assets: [ReleasesResp.Asset]
+
+		enum CodingKeys: String, CodingKey {
+			case tagName = "tag_name"
+			case assets
+		}
+	}
+
+	/// Called on app launch. Checks stable release once per 24h.
+	static func autoCheckForUpdate() {
+		let lastCheck = UserDefaults.standard.double(forKey: lastCheckKey)
+		let now = Date().timeIntervalSince1970
+		guard now - lastCheck > checkIntervalSeconds else {
+			Logger.log("CoreUpdateCheck: skip, last check \(Int((now - lastCheck) / 60))min ago")
+			return
+		}
+
+		Task {
+			// Wait 10s for core & proxy to be ready
+			try? await Task.sleep(nanoseconds: 10_000_000_000)
+			await performStableUpdateCheck()
+		}
+	}
+
+	/// Fetch latest stable release info
+	private static func fetchStableRelease() async throws -> StableRelease {
+		let session = proxySession()
+		guard let release = try? await session.request(stableReleaseURL)
+			.serializingDecodable(StableRelease.self).value else {
+			throw errors.downloadFailed
+		}
+		return release
+	}
+
+	/// Match the correct stable asset for current architecture
+	/// Pattern: mihomo-darwin-{arm64|amd64}-v{x.y.z}.gz
+	private static func stableCoreAsset(_ assets: [ReleasesResp.Asset]) throws -> ReleasesResp.Asset {
+		guard let arch = assetName(),
+			  let asset = assets.first(where: {
+				  guard $0.state == "uploaded",
+						$0.contentType == "application/gzip" else { return false }
+				  // Match exact pattern: mihomo-darwin-arm64-v1.19.25.gz
+				  // Exclude variants: -compatible, -go120, -v1-, -v2-
+				  let name = $0.name
+				  return name.hasPrefix("mihomo-darwin-\(arch)-v")
+					  && name.hasSuffix(".gz")
+					  && !name.contains("-compatible")
+					  && !name.contains("-go1")
+					  && !name.contains("-v1-")
+					  && !name.contains("-v2-")
+			  }) else {
+			throw errors.decodeReleaseInfoFailed
+		}
+		return asset
+	}
+
+	/// Compare semantic versions: "1.19.25" > "1.19.17" → true
+	private static func isNewer(_ remote: String, than current: String) -> Bool {
+		let r = remote.replacingOccurrences(of: "v", with: "").split(separator: ".").compactMap { Int($0) }
+		let c = current.replacingOccurrences(of: "v", with: "").split(separator: ".").compactMap { Int($0) }
+		for i in 0..<max(r.count, c.count) {
+			let rv = i < r.count ? r[i] : 0
+			let cv = i < c.count ? c[i] : 0
+			if rv > cv { return true }
+			if rv < cv { return false }
+		}
+		return false
+	}
+
+	private static func performStableUpdateCheck() async {
+		Logger.log("CoreUpdateCheck: checking latest stable release...")
+		UserDefaults.standard.set(Date().timeIntervalSince1970, forKey: lastCheckKey)
+
+		do {
+			let release = try await fetchStableRelease()
+			let remoteVersion = release.tagName // e.g. "v1.19.25"
+			let asset = try stableCoreAsset(release.assets)
+
+			// Get current running core version via API
+			let currentVersion: String = await withCheckedContinuation { continuation in
+				ApiRequest.requestVersion { ver in
+					continuation.resume(returning: ver?.version ?? "")
+				}
+			}
+
+			// Compare versions
+			guard isNewer(remoteVersion, than: currentVersion) else {
+				Logger.log("CoreUpdateCheck: already on latest (\(currentVersion))")
+				return
+			}
+
+			// Check if user skipped this version
+			if let skipped = UserDefaults.standard.string(forKey: skipVersionKey),
+			   skipped == remoteVersion {
+				Logger.log("CoreUpdateCheck: user skipped \(skipped)")
+				return
+			}
+
+			Logger.log("CoreUpdateCheck: update available \(currentVersion) → \(remoteVersion)")
+
+			await MainActor.run {
+				let info = "\(currentVersion) → \(remoteVersion) (Stable)"
+				UserNotificationCenter.shared.post(
+					title: NSLocalizedString("Core Update Available", comment: ""),
+					info: info
+				)
+			}
+		} catch {
+			Logger.log("CoreUpdateCheck: failed - \(error.localizedDescription)")
+		}
+	}
+}
+
