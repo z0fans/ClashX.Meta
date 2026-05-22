@@ -11,6 +11,34 @@ import CryptoKit
 
 class AlphaMetaDownloader: NSObject {
 
+	// MARK: - Proxy-aware Session
+	// Route downloads through mihomo's local proxy port (like FlClash)
+	// so GitHub downloads work behind GFW.
+
+	private static func proxySession() -> Session {
+		let configuration = URLSessionConfiguration.default
+		configuration.timeoutIntervalForRequest = 120
+		configuration.timeoutIntervalForResource = 300
+
+		if ConfigManager.shared.isRunning,
+		   let httpPort = ConfigManager.shared.currentConfig?.usedHttpPort,
+		   httpPort > 0 {
+			Logger.log("AlphaMetaDownloader: using proxy 127.0.0.1:\(httpPort)")
+			configuration.connectionProxyDictionary = [
+				kCFNetworkProxiesHTTPEnable: true,
+				kCFNetworkProxiesHTTPProxy: "127.0.0.1",
+				kCFNetworkProxiesHTTPPort: httpPort,
+				"HTTPSEnable": true,
+				"HTTPSProxy": "127.0.0.1",
+				"HTTPSPort": httpPort,
+			]
+		} else {
+			Logger.log("AlphaMetaDownloader: proxy not available, using direct")
+		}
+
+		return Session(configuration: configuration)
+	}
+
 	enum errors: Error {
 		case decodeReleaseInfoFailed
 		case notFoundUpdate
@@ -83,7 +111,8 @@ class AlphaMetaDownloader: NSObject {
 	}
 
 	static func alphaAssets() async throws -> [ReleasesResp.Asset] {
-		let resp = try? await AF.request("https://api.github.com/repos/MetaCubeX/mihomo/releases/tags/Prerelease-Alpha").serializingDecodable(ReleasesResp.self).value
+		let session = proxySession()
+		let resp = try? await session.request("https://api.github.com/repos/MetaCubeX/mihomo/releases/tags/Prerelease-Alpha").serializingDecodable(ReleasesResp.self).value
 		
 		guard let resp else {
 			throw errors.downloadFailed
@@ -113,10 +142,11 @@ class AlphaMetaDownloader: NSObject {
     }
     
     static func checksumString(_ assets: [ReleasesResp.Asset], asset: ReleasesResp.Asset) async throws -> String {
+        let session = proxySession()
         guard let checksumsAsset = assets.first(where: {
             $0.name == "checksums.txt"
         }),
-              let resp = try? await AF.request(checksumsAsset.downloadUrl).serializingString().value,
+              let resp = try? await session.request(checksumsAsset.downloadUrl).serializingString().value,
               let str = resp.split(separator: "\n").first(where: { $0.contains(asset.name) })?.split(separator: " ").first,
               str.count == 64
         else {
@@ -138,8 +168,8 @@ class AlphaMetaDownloader: NSObject {
 	}
 
 	static func downloadCore(_ asset: ReleasesResp.Asset) async throws -> Data {
-		let fm = FileManager.default
-		let data = try? await AF.download(asset.downloadUrl).serializingData().value
+		let session = proxySession()
+		let data = try? await session.download(asset.downloadUrl).serializingData().value
 
 		if let data {
 			return data
